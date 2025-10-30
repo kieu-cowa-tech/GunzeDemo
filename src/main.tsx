@@ -7,17 +7,20 @@ import './index.css'
 import AppThemeProvider from './components/Layout/theme/ThemeProvider.tsx'
 import QCNhuomPage from './pages/QCNhuom/QCNhuomPage.tsx'
 import TopBar from './components/Layout/TopBar.tsx'
+import { Container } from '@mui/material'
 
 createRoot(document.getElementById('root')!).render(
   <AppThemeProvider>
     <BrowserRouter>
       <React.Suspense>
-        <TopBar/>
-        <Routes>
-          <Route path="/" element={<QCNhuomPage />} />
-          {/* <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} /> */}
-        </Routes>
+        <TopBar />
+        <Container>
+          <Routes>
+            <Route path="/" element={<QCNhuomPage />} />
+            {/* <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} /> */}
+          </Routes>
+        </Container>
         <NotifyHost />
         <ConfirmDialog />
       </React.Suspense>
