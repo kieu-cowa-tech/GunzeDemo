@@ -20,10 +20,7 @@ export default function TopBar() {
       color="transparent"
       sx={(theme) => ({
         backdropFilter: "blur(6px)",
-        background:
-          theme.palette.mode === "dark"
-            ? "rgba(10, 14, 23, 0.7)"
-            : "#0a66c2",
+        background: "#0a66c2",
         color:"#FFFFFF",
         borderBottom: `1px solid ${theme.palette.divider}`,
       })}

@@ -1,11 +1,9 @@
 import { createTheme, responsiveFontSizes, type ThemeOptions } from "@mui/material";
 
-export const designTokens = (mode: "light" | "dark"): ThemeOptions => ({
+export const designTokens: ThemeOptions = {
   palette: {
-    mode,
-    ...(mode === "light"
-      ? { background: { default: "#fafafa" } }
-      : { background: { default: "#0f1115", paper: "#11131a" } }),
+    mode: "light",
+    background: { default: "#fafafa" },
   },
   typography: {
     fontFamily: `"Inter","Roboto","Helvetica","Arial",sans-serif`,
@@ -51,7 +49,7 @@ export const designTokens = (mode: "light" | "dark"): ThemeOptions => ({
       },
     },
   },
-});
+};
 
-export const makeTheme = (mode: "light" | "dark") =>
-  responsiveFontSizes(createTheme(designTokens(mode)));
+export const makeTheme = () =>
+  responsiveFontSizes(createTheme(designTokens));
