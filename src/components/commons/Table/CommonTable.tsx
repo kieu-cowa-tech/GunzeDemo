@@ -2,8 +2,7 @@
 import * as React from "react";
 import {
   Box, Table as MuiTable, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Checkbox, IconButton, TablePagination, CircularProgress, TableSortLabel, Tooltip,
-  useTheme, useMediaQuery
+  Checkbox, IconButton, TablePagination, CircularProgress, TableSortLabel, Tooltip
 } from "@mui/material";
 import { useStore } from "zustand";
 import { getRowId, type Column, type DataTableServerProps, type OrderDir, type ServerQuery, type TableState, type RowAction } from "./types";
@@ -18,9 +17,6 @@ export function CommonTable<T>(
     maxBodyHeight = "60vh",
     stickyHeader = true,
   } = props;
-
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const rows        = useStore(store, (s: TableState<T>) => s.rows);
   const total       = useStore(store, (s: TableState<T>) => s.total);
@@ -61,19 +57,8 @@ export function CommonTable<T>(
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
-      <TableContainer sx={{ 
-        maxHeight: maxBodyHeight, 
-        overflow: 'auto',
-        '&::-webkit-scrollbar': {
-          width: { xs: 4, sm: 8 },
-          height: { xs: 4, sm: 8 },
-        },
-        '&::-webkit-scrollbar-thumb': {
-          backgroundColor: 'rgba(0,0,0,0.2)',
-          borderRadius: 4,
-        }
-      }}>
-        <MuiTable size={isMobile ? "small" : "medium"} stickyHeader={stickyHeader}>
+      <TableContainer sx={{ maxHeight: maxBodyHeight, overflow: 'auto' }}>
+        <MuiTable size="medium" stickyHeader={stickyHeader}>
           <TableHead>
             <TableRow>
               {isShowCheckbox && (
@@ -191,25 +176,10 @@ export function CommonTable<T>(
           onPageChange={handleChangePage}
           rowsPerPage={pageSize}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={isMobile ? [5, 10, 20] : [10, 20, 50, 100, 200]}
+          rowsPerPageOptions={[10, 20, 50, 100, 200]}
           labelDisplayedRows={({ from, to }) =>
             pageTotal ? `${from}-${to} • Page ${pageIndex + 1}/${pageTotal}` : `${from}-${to}`
           }
-          sx={{
-            '& .MuiTablePagination-toolbar': {
-              minHeight: { xs: 48, sm: 52 },
-              px: { xs: 1, sm: 2 },
-            },
-            '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
-              fontSize: { xs: '0.75rem', sm: '0.875rem' },
-            },
-            '& .MuiTablePagination-select': {
-              fontSize: { xs: '0.75rem', sm: '0.875rem' },
-            },
-            '& .MuiIconButton-root': {
-              padding: { xs: 4, sm: 8 },
-            }
-          }}
         />
       )}
     </Box>
