@@ -33,7 +33,13 @@ createRoot(document.getElementById("root")!).render(
             <Container
               maxWidth={false}
               disableGutters
-              sx={{ px: 2, py: 2, width: "100%" }}
+              sx={{ 
+                px: { xs: 1, sm: 2, md: 3 }, 
+                py: { xs: 1, sm: 2 }, 
+                width: "100%",
+                minHeight: 0,
+                flex: 1
+              }}
             >
               <Routes>
                 <Route path="/" element={<QCNhuomPage />} />
