@@ -73,7 +73,7 @@ const defaultContainerStyle = {
   },
   "& .MuiOutlinedInput-input": {
     padding: "0",
-    fontSize: "14px",
+    fontSize: "16px",
     color: "#4E4E4E",
     fontWeight: 400,
     "&::placeholder": {
@@ -129,7 +129,7 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
       {/* Label và required badge ở phía trên */}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Typography sx={{ 
-          fontSize: "14px", 
+          fontSize: "16px", 
           fontWeight: 500, 
           color: "#333"
         }}>
