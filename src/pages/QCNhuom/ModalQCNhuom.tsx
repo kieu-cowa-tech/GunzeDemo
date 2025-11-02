@@ -218,7 +218,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
         <Box sx={modalContentStyle}>
           {/* Nhập Lot */}
           <Box
-            sx={{ mb: 3, borderBottom: "1px solid #E0E0E0", paddingBottom: 3 }}
+            sx={{ mb: 1, borderBottom: "1px solid #E0E0E0", paddingBottom: 2 }}
           >
             <Typography
               sx={{
@@ -306,7 +306,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
           </Box>
 
           {/* Thông tin lot */}
-          <Box sx={{ mb: 3 }}>
+          <Box sx={{ mb: 3 ,borderBottom: "1px solid #E0E0E0", paddingBottom: 1 }}>
             <Typography
               sx={{
                 fontSize: "20px",
