@@ -46,7 +46,7 @@ const modalStyle = {
   "& .MuiDialog-paper": {
     width: "600px",
     maxWidth: "90vw",
-    borderRadius: "8px",
+    border: "12px solid #ffffff",
     backgroundColor: "#ffffff",
     padding: 0,
     overflow: "visible",
@@ -54,7 +54,7 @@ const modalStyle = {
 };
 
 const modalHeaderStyle = {
-  backgroundColor: "#0A66C2",
+  backgroundColor: "#ffffff",
   padding: "16px 24px",
   borderBottom: "1px solid #E0E0E0",
   display: "flex",
@@ -64,13 +64,37 @@ const modalHeaderStyle = {
 };
 
 const modalTitleStyle = {
-  fontSize: "28px",
+  fontSize: "40px",
   fontWeight: 700,
-  color: "#FFF",
+  color: "#063E75",
   fontStyle: "normal",
   fontFamily: "'Poppins', sans-serif",
   textAlign: "right",
-  lineHeight: "34px",
+  lineHeight: "48px",
+};
+const LotBoxStyle = {
+  //backgroundColor: "#F5F5F5",
+  padding: "12px 16px",
+  borderRadius: "6px",
+  display: "flex",
+  flexDirection: "column",
+  gap: 0.5,
+  textAlign: "center",
+};
+const typogKeyStyle = {
+  backgroundColor: "#F5F5F5",
+  fontSize: "16px",
+  fontWeight: 500,
+  color: "#666",
+  lineHeight: "24px",
+  width: "100%",
+};
+const typogValueStyle = {
+  fontSize: "16px",
+  fontWeight: 700,
+  color: "#333",
+  lineHeight: "24px",
+  
 };
 
 const modalContentStyle = {
@@ -180,8 +204,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
   };
 
   // Xác định title và button text dựa trên mode
-  const modalTitle =
-    mode === "add" ? "Nhập kết quả QC Nhuộm" : "Chỉnh Sửa QC Nhuộm";
+  const modalTitle = mode === "add" ? "Kết quả QC Nhuộm" : "Chỉnh Sửa QC Nhuộm";
 
   return (
     <Dialog open={open} onClose={onClose} sx={modalStyle} maxWidth={false}>
@@ -195,48 +218,147 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
         <Box sx={modalContentStyle}>
           {/* Nhập Lot */}
           <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              gap: 3,
-            }}
+            sx={{ mb: 3, borderBottom: "1px solid #E0E0E0", paddingBottom: 3 }}
           >
             <Typography
               sx={{
-                fontSize: "14px",
-                fontWeight: 500,
+                fontSize: "20px",
+                fontWeight: 700,
+                fontStyle: "normal",
                 color: "#333",
+                lineHeight: "28px",
+                mb: 2,
               }}
             >
-              Lot nguyên liệu
+              Nhập Lot no
             </Typography>
-            <Controller
-              name="lotNguyenLieu"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  type="string"
-                  label="Lot nguyên liệu"
-                  placeholder="Nhập lot nguyên liệu"
-                />
-              )}
-            />
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit(handleFormSubmit)}
+            <Box
               sx={{
-                height: "full-content",
-                alignSelf: "end",
-                mb: 1,
-                width: "120px",
+                display: "flex",
+                gap: 2,
+                alignItems: "stretch",
               }}
             >
-              Tra cứu <Search sx={{ marginLeft: 1 }} />
-            </Button>
+              <Controller
+                name="lotNguyenLieu"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    type="string"
+                    placeholder="Lot no"
+                    fullWidth
+                    sx={{
+                      flex: 1,
+                      "& .MuiOutlinedInput-root": {
+                        height: "48px",
+                        borderRadius: "6px",
+                        backgroundColor: "#FFF",
+                        "& fieldset": {
+                          borderColor: "#CCC",
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#999",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#007FFF",
+                        },
+                      },
+                      "& .MuiOutlinedInput-input": {
+                        padding: "12px 16px",
+                        fontSize: "16px",
+                        color: "#333",
+                        "&::placeholder": {
+                          color: "#999",
+                          opacity: 1,
+                        },
+                      },
+                    }}
+                  />
+                )}
+              />
+
+              <Button
+                variant="contained"
+                onClick={handleSubmit(handleFormSubmit)}
+                sx={{
+                  minWidth: "120px",
+                  height: "48px",
+                  backgroundColor: "#007FFF",
+                  color: "#FFF",
+                  fontSize: "16px",
+                  fontWeight: 500,
+                  textTransform: "none",
+                  borderRadius: "6px",
+                  boxShadow: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  "&:hover": {
+                    backgroundColor: "#0066CC",
+                    boxShadow: "none",
+                  },
+                }}
+              >
+                Tra cứu <Search sx={{ fontSize: "30px" }} />
+              </Button>
+            </Box>
           </Box>
+
+          {/* Thông tin lot */}
+          <Box sx={{ mb: 3 }}>
+            <Typography
+              sx={{
+                fontSize: "20px",
+                fontWeight: 700,
+                fontStyle: "normal",
+                color: "#333",
+                lineHeight: "28px",
+                mb: 2,
+              }}
+            >
+              Thông tin lot
+            </Typography>
+
+            {/* Grid 2x2 cho thông tin */}
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: 2,
+              }}
+            >
+              {/* Loại chỉ (kế hoạch) */}
+              <Box sx={{ ...LotBoxStyle }}>
+                <Typography sx={{ ...typogKeyStyle }}>
+                  Loại chỉ (kế hoạch)
+                </Typography>
+                <Typography sx={{ ...typogValueStyle }}>T60</Typography>
+              </Box>
+
+              {/* Màu chỉ */}
+              <Box sx={{ ...LotBoxStyle }}>
+              
+                <Typography sx={{ ...typogKeyStyle }}>Màu chỉ</Typography>
+                <Typography sx={{ ...typogValueStyle }}>NCC9804</Typography>
+              </Box>
+
+              {/* Phân loại */}
+              <Box sx={{ ...LotBoxStyle }}>
+                <Typography sx={{ ...typogKeyStyle }}>Phân loại</Typography>
+                <Typography sx={{ ...typogValueStyle }}>FINE</Typography>
+              </Box>
+
+              {/* Nhà cung cấp nguyên liệu */}
+            <Box sx={{ ...LotBoxStyle }}>
+                <Typography sx={{ ...typogKeyStyle }}>
+                  Nhà cung cấp nguyên liệu
+                </Typography>
+                <Typography sx={{ ...typogValueStyle }}>SHANGHAI</Typography>
+              </Box>
+            </Box>
+          </Box>
+
           <form onSubmit={handleSubmit(handleFormSubmit)}>
             {/* First Row */}
             <Box
