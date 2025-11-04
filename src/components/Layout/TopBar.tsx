@@ -66,7 +66,7 @@ export default function TopBar() {
               gap: isMobile ? 1 : 0,
             }}
           >
-            {isMobile && (
+            {/* {isMobile && (
               <Box
                 component="img"
                 src={`/assets/cowatech-text.svg`}
@@ -76,26 +76,17 @@ export default function TopBar() {
                   height: { xs: 24, sm: 28, md: 32 },
                 }}
               />
-            )}
+            )} */}
 
             <Box
               component="img"
               src={`/assets/cowatech-text.svg`}
               alt="Logo"
               sx={{
-                height: { sm: 25, md: 30 },
+                height: { sm: 35, md: 40 },
                 width: "auto",
               }}
             />
-
-            {isMobile && (
-              <Typography
-                variant="h6"
-                sx={{ fontSize: "1rem", fontWeight: 600 }}
-              >
-                Gunze Demo
-              </Typography>
-            )}
           </Box>
         </Box>
 
