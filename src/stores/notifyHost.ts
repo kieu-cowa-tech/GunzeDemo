@@ -9,6 +9,7 @@ type Store = {
   success: (m: string, d?: number) => void;
   error: (m: string, d?: number) => void;
   warning: (m: string, d?: number) => void;
+  info: (m: string, d?: number) => void;
 };
 
 export const useNotifyStore = create<Store>((set) => ({
@@ -18,10 +19,12 @@ export const useNotifyStore = create<Store>((set) => ({
   success: (m, d) => set((s) => ({ queue: [...s.queue, { id: Date.now(), message: m, severity: "success", duration: d }] })),
   error:   (m, d) => set((s) => ({ queue: [...s.queue, { id: Date.now(), message: m, severity: "error",   duration: d }] })),
   warning: (m, d) => set((s) => ({ queue: [...s.queue, { id: Date.now(), message: m, severity: "warning", duration: d }] })),
+  info: (m, d) => set((s) => ({ queue: [...s.queue, { id: Date.now(), message: m, severity: "info", duration: d }] })),
 }));
 
 export const notify = {
   success: (m: string, d?: number) => useNotifyStore.getState().success(m, d),
   error:   (m: string, d?: number) => useNotifyStore.getState().error(m, d),
   warning: (m: string, d?: number) => useNotifyStore.getState().warning(m, d),
+  info: (m: string, d?: number) => useNotifyStore.getState().info(m, d),
 };

@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { QCNhuomData } from "./Data";
 import { QCNhuomModal } from "./ModalQCNhuom";
 import type { QCNhuomFormData } from "./ModalQCNhuom";
+import { notify } from "../../stores/notifyHost";
 
 export default function QCNhuomPage() {
   const { items, addItem, updateItem, removeItem } = useQCNhuomStore();
@@ -61,12 +62,15 @@ export default function QCNhuomPage() {
         id: newId,
       };
       addItem(newItem);
+      notify.success("Thêm mới kết quả QC Nhuộm thành công!");
+      console.log("Đã thêm mới kết quả QC Nhuộm:", newItem);
     } else if (modalMode === "edit" && editingItem) {
       const updatedItem: QCNhuom = {
         ...convertedData,
         id: editingItem.id,
       };
       updateItem(editingItem.id, updatedItem);
+      notify.success("Cập nhật kết quả QC Nhuộm thành công!");
     }
     handleCloseModal();
   };

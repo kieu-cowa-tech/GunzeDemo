@@ -13,7 +13,7 @@ export default function NotifyHost() {
       open={!!current}
       autoHideDuration={5000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
     >
       <Alert onClose={handleClose} severity={current?.severity ?? "info"} variant="filled" sx={{ width: "100%" }}>
         {current?.message}

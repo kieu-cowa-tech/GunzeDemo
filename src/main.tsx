@@ -13,6 +13,7 @@ import QCNhuomModal from "./pages/QCNhuom/ModalQCNhuom.tsx";
 import { useQCNhuomStore } from "./pages/QCNhuom/store.ts";
 import type { QCNhuom } from "./pages/QCNhuom/type.ts";
 import type { QCNhuomFormData } from "./pages/QCNhuom/ModalQCNhuom.tsx";
+import { notify } from "./stores/notifyHost.ts";
 
 export const AppContent: React.FC = () => {
   const { isQCNhuomModalOpen, closeQCNhuomModal } = useModal();
@@ -33,7 +34,9 @@ export const AppContent: React.FC = () => {
       doAm: typeof formData.doAm === 'string' ? Number(formData.doAm) || 0 : formData.doAm,
     };
     addItem(newItem);
+    
     closeQCNhuomModal();
+    notify.success("Thêm mới kết quả QC Nhuộm thành công!");
   };
 
   return (
