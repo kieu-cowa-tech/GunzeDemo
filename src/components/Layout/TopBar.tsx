@@ -6,7 +6,6 @@ import {
   Avatar,
   useTheme,
   useMediaQuery,
-  Typography,
   Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -66,18 +65,6 @@ export default function TopBar() {
               gap: isMobile ? 1 : 0,
             }}
           >
-            {/* {isMobile && (
-              <Box
-                component="img"
-                src={`/assets/cowatech-text.svg`}
-                alt="Logo"
-                sx={{
-                  width: { xs: 24, sm: 28, md: 32 },
-                  height: { xs: 24, sm: 28, md: 32 },
-                }}
-              />
-            )} */}
-
             <Box
               component="img"
               src={`/assets/cowatech-text.svg`}
