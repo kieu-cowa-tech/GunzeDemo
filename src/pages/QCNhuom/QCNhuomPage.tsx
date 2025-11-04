@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useQCNhuomStore } from "./store";
 import type { QCNhuom } from "./type";
 import { createDataTableStore } from "../../components/commons/Table/tableStore";
@@ -7,9 +7,15 @@ import type { Column, RowAction } from "../../components/commons/Table/types";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { QCNhuomData } from "./Data";
+import { QCNhuomModal } from "./ModalQCNhuom";
+import type { QCNhuomFormData } from "./ModalQCNhuom";
 
 export default function QCNhuomPage() {
-  const { items, updateItem, removeItem } = useQCNhuomStore();
+  const { items, addItem, updateItem, removeItem } = useQCNhuomStore();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState<QCNhuom | null>(null);
+  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
+
   const qCNhuomTableStore = createDataTableStore<QCNhuom>({
     pageSize: 10,
     sortBy: "lastUpdateAt",
@@ -18,8 +24,39 @@ export default function QCNhuomPage() {
 
   useEffect(() => {
     qCNhuomTableStore.getState().setData(items ?? QCNhuomData, items.length ?? QCNhuomData.length);
-  }, [items]);
-console.log("items", items);
+  }, [items, qCNhuomTableStore]);
+  
+  console.log("items", items);
+
+  const handleOpenEditModal = (item: QCNhuom) => {
+    setModalMode("edit");
+    setEditingItem(item);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingItem(null);
+  };
+
+  const handleSubmitModal = (formData: QCNhuomFormData) => {
+    if (modalMode === "add") {
+      // Generate new ID
+      const newId = items.length > 0 ? Math.max(...items.map(i => i.id)) + 1 : 1;
+      const newItem: QCNhuom = {
+        ...formData,
+        id: newId,
+      };
+      addItem(newItem);
+    } else if (modalMode === "edit" && editingItem) {
+      const updatedItem: QCNhuom = {
+        ...formData,
+        id: editingItem.id,
+      };
+      updateItem(editingItem.id, updatedItem);
+    }
+    handleCloseModal();
+  };
   const columns: Column<QCNhuom>[] = [
     { key: "ngayNhap", header: "Ngày nhập", sortable: true, minWidth: 160 },
     { key: "congNhan", header: "Công nhân", sortable: true, minWidth: 200 },
@@ -95,7 +132,7 @@ console.log("items", items);
       id: "edit",
       label: "Edit",
       icon: <EditIcon color="primary" />,
-      onClick: (u: QCNhuom) => updateItem(u.id, u),
+      onClick: (u: QCNhuom) => handleOpenEditModal(u),
     },
     {
       id: "delete",
@@ -109,12 +146,38 @@ console.log("items", items);
   ];
 
   return (
-    <CommonTable<QCNhuom>
-      columns={columns}
-      actions={actions}
-      keyField="id"
-      loading={false}
-      store={qCNhuomTableStore}
-    />
+    <>
+      {/* <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={handleOpenAddModal}
+          sx={{
+            backgroundColor: "#002194",
+            "&:hover": {
+              backgroundColor: "rgba(0, 33, 148, 0.8)",
+            },
+          }}
+        >
+          Thêm mới
+        </Button>
+      </Box> */}
+
+      <CommonTable<QCNhuom>
+        columns={columns}
+        actions={actions}
+        keyField="id"
+        loading={false}
+        store={qCNhuomTableStore}
+      />
+
+      <QCNhuomModal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitModal}
+        editData={editingItem}
+        mode={modalMode}
+      />
+    </>
   );
 }

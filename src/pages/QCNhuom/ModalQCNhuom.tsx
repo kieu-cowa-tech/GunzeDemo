@@ -22,7 +22,7 @@ import type { QCNhuom, Staff, LOTInfo } from "./type";
 import { StaffData, LOTData } from "./Data";
 
 // Định nghĩa type cho form data
-type QCNhuomFormData = {
+export type QCNhuomFormData = {
   id: number | null;
   ngayNhap: Date | string;
   congNhan: string;
@@ -58,10 +58,13 @@ const modalStyle = {
   "& .MuiDialog-paper": {
     width: "600px",
     maxWidth: "90vw",
+    maxHeight: "90vh",
     border: "12px solid #ffffff",
     backgroundColor: "#ffffff",
     padding: 0,
-    overflow: "visible",
+    overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
   },
 };
 
@@ -120,15 +123,21 @@ const modalContentStyle = {
   display: "flex",
   flexDirection: "column",
   gap: 3,
+  overflowY: "auto",
+  flex: 1,
 };
 
-// Button styles
+// Button styles - Footer fixed
 const buttonContainerStyle = {
   display: "flex",
   justifyContent: "flex-end",
   gap: 2,
-  marginTop: 2,
-  padding: "16px 0",
+  padding: "16px 24px",
+  borderTop: "1px solid #E0E0E0",
+  backgroundColor: "#ffffff",
+  position: "sticky",
+  bottom: 0,
+  zIndex: 10,
 };
 
 export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
@@ -319,7 +328,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       </Box>
 
       {/* Modal Content */}
-      <DialogContent sx={{ padding: 0 }}>
+      <DialogContent sx={{ padding: 0, flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
         <Box sx={modalContentStyle}>
           {/* Nhập Lot */}
           <Box
@@ -737,7 +746,6 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       label="Tổng(kg)"
                       type="number"
                       placeholder="Nhập tổng (kg)"
-                      sx={{ height: "10vh" }}
                       error={!!errors.tong}
                       helperText={errors.tong?.message}
                       required={true}
@@ -807,18 +815,18 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   name="slBack"
                   control={control}
                   rules={{
-                    required: "SL Back là bắt buộc",
+                    required: "Số lượng BACK là bắt buộc",
                     min: {
                       value: 0,
-                      message: "SL Back phải lớn hơn hoặc bằng 0"
+                      message: "Số lượng BACK phải lớn hơn hoặc bằng 0"
                     }
                   }}
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="SL Back"
+                      label="Số lượng BACK (cuộn)"
                       type="number"
-                      placeholder="Nhập số lượng back"
+                      placeholder="Nhập số lượng BACK"
                       error={!!errors.slBack}
                       helperText={errors.slBack?.message}
                       required={true}
@@ -831,8 +839,11 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="PD Black"
-                      placeholder="Nhập PD Black"
+                      label="Lý do BLACK"
+                      placeholder="Nhập lý do BLACK"
+                      multiline={true}
+                      rows={2}
+                      maxRows={3}
                       error={!!errors.pDBlack}
                       helperText={errors.pDBlack?.message}
                     />
@@ -853,18 +864,18 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   name="slVutRac"
                   control={control}
                   rules={{
-                    required: "SL Vụt rác là bắt buộc",
+                    required: "Số lượng vứt rác là bắt buộc",
                     min: {
                       value: 0,
-                      message: "SL Vụt rác phải lớn hơn hoặc bằng 0"
+                      message: "Số lượng vứt rác phải lớn hơn hoặc bằng 0"
                     }
                   }}
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="SL Vụt rác"
+                      label="Số lượng vứt rác"
                       type="number"
-                      placeholder="Nhập số lượng vụt rác"
+                      placeholder="Nhập số lượng vứt rác"
                       error={!!errors.slVutRac}
                       helperText={errors.slVutRac?.message}
                       required={true}
@@ -877,8 +888,11 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="PD Vụt rác"
-                      placeholder="Nhập PD vụt rác"
+                      label="Lý do vứt rác"
+                      placeholder="Nhập lý do vứt rác"
+                      multiline={true}
+                      rows={0}
+                      maxRows={3}
                       error={!!errors.pDVutRac}
                       helperText={errors.pDVutRac?.message}
                     />
@@ -899,16 +913,16 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   name="slKhac"
                   control={control}
                   rules={{
-                    required: "SL Khác là bắt buộc",
+                    required: "Số lượng NG khác là bắt buộc",
                     min: {
                       value: 0,
-                      message: "SL Khác phải lớn hơn hoặc bằng 0"
+                      message: "Số lượng NG khác phải lớn hơn hoặc bằng 0"
                     }
                   }}
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="SL Khác"
+                      label="Số lượng NG khác (cuộn)"
                       type="number"
                       placeholder="Nhập số lượng khác"
                       error={!!errors.slKhac}
@@ -923,8 +937,11 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="PĐ Khác"
-                      placeholder="Nhập PĐ khác"
+                      label="Lý do Khác"
+                      placeholder="Nhập lý do khác"
+                      multiline={true}
+                      rows={2}
+                      maxRows={3}
                       error={!!errors.pĐKhac}
                       helperText={errors.pĐKhac?.message}
                     />
@@ -932,61 +949,61 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                 />
               </Box>
             </Box>
-
-            {/* Action Buttons */}
-            <Box sx={buttonContainerStyle}>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleCancel}
-                disabled={loading}
-                sx={{
-                  fontSize: "18px",
-                  fontWeight: 500,
-                  borderRadius: "50px",
-                  minWidth: "120px",
-                  px: 3,
-                  py: 1.5,
-                  borderColor: "#E0E0E0",
-                  color: "#333333",
-                  "&:hover": {
-                    backgroundColor: "#F5F5F5",
-                    borderColor: "#E0E0E0",
-                  },
-                }}
-              >
-                Hủy
-                <CancelPresentationOutlined sx={{ marginLeft: "10px" }} />
-              </Button>
-              <Button
-                variant="contained"
-                disabled={loading}
-                sx={{
-                  fontSize: "18px",
-                  fontWeight: 500,
-                  borderRadius: "50px",
-                  minWidth: "120px",
-                  px: 3,
-                  py: 1.5,
-                  backgroundColor: "#002194",
-                  "&:hover": {
-                    backgroundColor: "rgba(0, 33, 148, 0.8)",
-                  },
-                }}
-                onClick={handleSubmit(handleFormSubmit)}
-              >
-                {loading
-                  ? mode === "add"
-                    ? "Đang Lưu..."
-                    : "Đang cập nhật..."
-                  : mode === "add"
-                  ? "Lưu"
-                  : "Cập nhật"}
-
-                <CheckBoxOutlined sx={{ marginLeft: "10px" }} />
-              </Button>
-            </Box>
           </form>
+        </Box>
+
+        {/* Action Buttons - Fixed Footer */}
+        <Box sx={buttonContainerStyle}>
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={handleCancel}
+            disabled={loading}
+            sx={{
+              fontSize: "18px",
+              fontWeight: 500,
+              borderRadius: "50px",
+              minWidth: "120px",
+              px: 3,
+              py: 1.5,
+              borderColor: "#E0E0E0",
+              color: "#333333",
+              "&:hover": {
+                backgroundColor: "#F5F5F5",
+                borderColor: "#E0E0E0",
+              },
+            }}
+          >
+            Hủy
+            <CancelPresentationOutlined sx={{ marginLeft: "10px" }} />
+          </Button>
+          <Button
+            variant="contained"
+            disabled={loading}
+            sx={{
+              fontSize: "18px",
+              fontWeight: 500,
+              borderRadius: "50px",
+              minWidth: "120px",
+              px: 3,
+              py: 1.5,
+              backgroundColor: "#002194",
+              "&:hover": {
+                backgroundColor: "rgba(0, 33, 148, 0.8)",
+              },
+            }}
+            onClick={handleSubmit(handleFormSubmit)}
+          >
+            {loading
+              ? mode === "add"
+                ? "Đang Lưu..."
+                : "Đang cập nhật..."
+              : mode === "add"
+              ? "Lưu"
+              : "Cập nhật"}
+
+            <CheckBoxOutlined sx={{ marginLeft: "10px" }} />
+          </Button>
         </Box>
       </DialogContent>
     </Dialog>
