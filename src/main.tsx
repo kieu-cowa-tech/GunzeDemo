@@ -12,17 +12,25 @@ import { ModalProvider, useModal } from "./stores/modalContext.tsx";
 import QCNhuomModal from "./pages/QCNhuom/ModalQCNhuom.tsx";
 import { useQCNhuomStore } from "./pages/QCNhuom/store.ts";
 import type { QCNhuom } from "./pages/QCNhuom/type.ts";
+import type { QCNhuomFormData } from "./pages/QCNhuom/ModalQCNhuom.tsx";
 
 export const AppContent: React.FC = () => {
   const { isQCNhuomModalOpen, closeQCNhuomModal } = useModal();
   const { addItem } = useQCNhuomStore();
 
-  const handleQCNhuomSubmit = (data: Omit<QCNhuom, 'id'>) => {
-    // Thêm logic xử lý submit modal ở đây
-    console.log("Submit QCNhuom data:", data);
+  const handleQCNhuomSubmit = (formData: QCNhuomFormData) => {
+    // Chuyển đổi các giá trị string về number
+    console.log("Submit QCNhuom data:", formData);
     const newItem: QCNhuom = {
-      ...data,
+      ...formData,
       id: Date.now(), // Tạm thời sử dụng timestamp làm ID
+      checkGME: typeof formData.checkGME === 'string' ? Number(formData.checkGME) || 0 : formData.checkGME,
+      slOk: typeof formData.slOk === 'string' ? Number(formData.slOk) || 0 : formData.slOk,
+      tong: typeof formData.tong === 'string' ? Number(formData.tong) || 0 : formData.tong,
+      slBack: typeof formData.slBack === 'string' ? Number(formData.slBack) || 0 : formData.slBack,
+      slVutRac: typeof formData.slVutRac === 'string' ? Number(formData.slVutRac) || 0 : formData.slVutRac,
+      slKhac: typeof formData.slKhac === 'string' ? Number(formData.slKhac) || 0 : formData.slKhac,
+      doAm: typeof formData.doAm === 'string' ? Number(formData.doAm) || 0 : formData.doAm,
     };
     addItem(newItem);
     closeQCNhuomModal();

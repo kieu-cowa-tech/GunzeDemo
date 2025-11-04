@@ -31,17 +31,17 @@ export type QCNhuomFormData = {
   phanLoai: string;
   nhaCungCap: string;
   lotNguyenLieu: string;
-  checkGME: number;
-  slOk: number;
-  tong: number;
+  checkGME: number | string;
+  slOk: number | string;
+  tong: number | string;
   ghiChu: string;
-  slBack: number;
+  slBack: number | string;
   pDBlack: string;
-  slVutRac: number;
+  slVutRac: number | string;
   pDVutRac: string;
-  slKhac: number;
+  slKhac: number | string;
   pĐKhac: string;
-  doAm: number;
+  doAm: number | string;
 };
 
 interface QCNhuomModalProps {
@@ -189,17 +189,17 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       phanLoai: "",
       nhaCungCap: "",
       lotNguyenLieu: "",
-      checkGME: 0,
-      slOk: 0,
-      tong: 0,
+      checkGME: "",
+      slOk: "",
+      tong: "",
       ghiChu: "",
-      slBack: 0,
+      slBack: "",
       pDBlack: "",
-      slVutRac: 0,
+      slVutRac: "",
       pDVutRac: "",
-      slKhac: 0,
+      slKhac: "",
       pĐKhac: "",
-      doAm: 0,
+      doAm: "",
     },
     mode: "onChange",
   });
@@ -281,17 +281,17 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
         phanLoai: "",
         nhaCungCap: "",
         lotNguyenLieu: "",
-        checkGME: 0,
-        slOk: 0,
-        tong: 0,
+        checkGME: "",
+        slOk: "",
+        tong: "",
         ghiChu: "",
-        slBack: 0,
+        slBack: "",
         pDBlack: "",
-        slVutRac: 0,
+        slVutRac: "",
         pDVutRac: "",
-        slKhac: 0,
+        slKhac: "",
         pĐKhac: "",
-        doAm: 0,
+        doAm: "",
       });
       setSelectedStaff(null);
     }
@@ -307,12 +307,20 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
     reset();
     onClose();
   };
+    // Chặn đóng modal khi click ra ngoài
+  const handleDialogClose = (_event: object, reason: string) => {
+    if (reason === 'backdropClick') {
+      return; // Không làm gì khi click vào backdrop
+    }
+    onClose();
+  };
+
 
   // Xác định title và button text dựa trên mode
   const modalTitle = mode === "add" ? "Kết quả QC Nhuộm" : "Chỉnh Sửa QC Nhuộm";
 
   return (
-    <Dialog open={open} onClose={onClose} sx={modalStyle} maxWidth={false}>
+    <Dialog open={open} onClose={handleDialogClose} sx={modalStyle} maxWidth={false}>
       {/* Modal Header */}
       <Box sx={modalHeaderStyle}>
         <Box

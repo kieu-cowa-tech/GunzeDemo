@@ -40,17 +40,30 @@ export default function QCNhuomPage() {
   };
 
   const handleSubmitModal = (formData: QCNhuomFormData) => {
+    // Chuyển đổi các giá trị string về number
+    const convertedData: QCNhuom = {
+      ...formData,
+      id: formData.id || 0,
+      checkGME: typeof formData.checkGME === 'string' ? Number(formData.checkGME) || 0 : formData.checkGME,
+      slOk: typeof formData.slOk === 'string' ? Number(formData.slOk) || 0 : formData.slOk,
+      tong: typeof formData.tong === 'string' ? Number(formData.tong) || 0 : formData.tong,
+      slBack: typeof formData.slBack === 'string' ? Number(formData.slBack) || 0 : formData.slBack,
+      slVutRac: typeof formData.slVutRac === 'string' ? Number(formData.slVutRac) || 0 : formData.slVutRac,
+      slKhac: typeof formData.slKhac === 'string' ? Number(formData.slKhac) || 0 : formData.slKhac,
+      doAm: typeof formData.doAm === 'string' ? Number(formData.doAm) || 0 : formData.doAm,
+    };
+
     if (modalMode === "add") {
       // Generate new ID
       const newId = items.length > 0 ? Math.max(...items.map(i => i.id)) + 1 : 1;
       const newItem: QCNhuom = {
-        ...formData,
+        ...convertedData,
         id: newId,
       };
       addItem(newItem);
     } else if (modalMode === "edit" && editingItem) {
       const updatedItem: QCNhuom = {
-        ...formData,
+        ...convertedData,
         id: editingItem.id,
       };
       updateItem(editingItem.id, updatedItem);
