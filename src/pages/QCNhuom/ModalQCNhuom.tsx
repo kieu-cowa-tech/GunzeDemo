@@ -154,6 +154,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
   const [foundLot, setFoundLot] = useState<LOTInfo | null>(null);
   const [lotSearchError, setLotSearchError] = useState<string>("");
   const [isLotInfoExpanded, setIsLotInfoExpanded] = useState<boolean>(false);
+  const [isFormEnabled, setIsFormEnabled] = useState<boolean>(false);
 
   // Tạo today memoized để tránh warning dependency
   const today = React.useMemo(() => new Date(), []);
@@ -211,6 +212,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
     if (!lotNguyenLieu || lotNguyenLieu.trim() === "") {
       setLotSearchError("Vui lòng nhập mã Lot nguyên liệu");
       setFoundLot(null);
+      setIsFormEnabled(false);
       return;
     }
 
@@ -225,6 +227,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       setFoundLot(found);
       setLotSearchError(""); // Xóa lỗi nếu tìm thấy
       setIsLotInfoExpanded(true); // Tự động mở rộng khi tìm thấy
+      setIsFormEnabled(true); // Enable form khi tra cứu thành công
 
       // Điền thông tin vào các trường ẩn (chuyển đổi từ number sang string)
       setValue("maChi", found.loaiChi);
@@ -235,6 +238,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       console.log("Đã tìm thấy và điền thông tin Lot:", found);
     } else {
       setFoundLot(null);
+      setIsFormEnabled(false);
       setLotSearchError(`Không tìm thấy Lot nguyên liệu: ${lotNguyenLieu}`);
     }
   };
@@ -270,6 +274,9 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       // Tìm staff tương ứng để hiển thị trong AsyncAutocomplete
       const staff = StaffData.find(s => s.tenNV === editData.congNhan || s.maNV === editData.congNhan);
       setSelectedStaff(staff || null);
+      
+      // Enable form khi ở chế độ edit
+      setIsFormEnabled(true);
     } else {
       // Reset về giá trị mặc định cho chế độ thêm mới
       reset({
@@ -294,6 +301,11 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
         doAm: "",
       });
       setSelectedStaff(null);
+      
+      // Disable form khi thêm mới
+      setIsFormEnabled(false);
+      setFoundLot(null);
+      setLotSearchError("");
     }
   }, [mode, editData, reset, today]);
 
@@ -381,6 +393,9 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                         },
                         "&.Mui-focused fieldset": {
                           borderColor: lotSearchError ? "#d32f2f" : "#007FFF",
+                        },
+                        "&.Mui-disabled": {
+                          backgroundColor: "#EBEBEB",
                         },
                       },
                       "& .MuiOutlinedInput-input": {
@@ -581,6 +596,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                         isOptionEqualToValue={(option, value) =>
                           option.id === value.id
                         }
+                        disabled={!isFormEnabled}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -589,6 +605,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                               "& .MuiOutlinedInput-root": {
                                 height: "40px",
                                 fontSize: "14px",
+                                backgroundColor: !isFormEnabled ? "#EBEBEB" : "#FFF",
                               },
                             }}
                           />
@@ -650,6 +667,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.lotNguyenLieu}
                       helperText={errors.lotNguyenLieu?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -672,6 +690,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.checkGME}
                       helperText={errors.checkGME?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -704,6 +723,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.slOk}
                       helperText={errors.slOk?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -726,6 +746,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.doAm}
                       helperText={errors.doAm?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -757,6 +778,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.tong}
                       helperText={errors.tong?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -773,6 +795,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       maxRows={6}
                       error={!!errors.ghiChu}
                       helperText={errors.ghiChu?.message}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -838,6 +861,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.slBack}
                       helperText={errors.slBack?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -854,6 +878,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       maxRows={3}
                       error={!!errors.pDBlack}
                       helperText={errors.pDBlack?.message}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -887,6 +912,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.slVutRac}
                       helperText={errors.slVutRac?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -903,6 +929,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       maxRows={3}
                       error={!!errors.pDVutRac}
                       helperText={errors.pDVutRac?.message}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -936,6 +963,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       error={!!errors.slKhac}
                       helperText={errors.slKhac?.message}
                       required={true}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />
@@ -952,6 +980,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       maxRows={3}
                       error={!!errors.pĐKhac}
                       helperText={errors.pĐKhac?.message}
+                      disabled={!isFormEnabled}
                     />
                   )}
                 />

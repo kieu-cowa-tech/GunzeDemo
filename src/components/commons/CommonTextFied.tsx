@@ -66,7 +66,7 @@ interface CommonTextFieldProps extends Omit<TextFieldProps, "variant" | "fullWid
 }
 
 // Styles cho container bao bọc toàn bộ
-const getDefaultContainerStyle = (hasError: boolean) => ({
+const getDefaultContainerStyle = (hasError: boolean, isDisabled: boolean) => ({
   position: "relative",
   display: "flex",
   flexDirection: "column",
@@ -75,7 +75,7 @@ const getDefaultContainerStyle = (hasError: boolean) => ({
   gap: "4px",
   borderRadius: "6px",
   border: hasError ? "1px solid #d32f2f" : "1px solid #CCC",
-  backgroundColor: "#FFF",
+  backgroundColor: isDisabled ? "#EBEBEB" : "#FFF",
   "&:hover": {
     border: hasError ? "1px solid #d32f2f" : "1px solid #999",
   },
@@ -125,7 +125,7 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
   ...textFieldProps
 }) => {
   const mergedContainerSx = {
-    ...getDefaultContainerStyle(error),
+    ...getDefaultContainerStyle(error, !!textFieldProps.disabled),
     ...containerSx,
   };
 
