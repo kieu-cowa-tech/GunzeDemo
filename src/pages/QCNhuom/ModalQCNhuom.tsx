@@ -1016,7 +1016,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
           </Button>
           <Button
             variant="contained"
-            disabled={loading}
+            disabled={loading || !isFormEnabled}
             sx={{
               fontSize: "18px",
               fontWeight: 500,
@@ -1027,6 +1027,10 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
               backgroundColor: "#002194",
               "&:hover": {
                 backgroundColor: "rgba(0, 33, 148, 0.8)",
+              },
+              "&.Mui-disabled": {
+                backgroundColor: "#CCCCCC",
+                color: "#EBEBEB",
               },
             }}
             onClick={handleSubmit(handleFormSubmit)}
