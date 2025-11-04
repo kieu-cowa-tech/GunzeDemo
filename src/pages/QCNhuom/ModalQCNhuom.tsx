@@ -619,7 +619,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
 
             {/* Thông tin */}
             <Box
-              sx={{ backgroundColor: " #D7D7D7", borderRadius: "6px", p: 2 }}
+              sx={{ backgroundColor: " #F4F5FA", borderRadius: "6px", p: 2 }}
             >
               <Box
                 sx={{
@@ -627,10 +627,10 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   alignItems: "center",
                   justifyContent: "space-between",
                   p: 2,
-                  backgroundColor: "#8dc3faff",
+                  backgroundColor: "#E6F0FA",
                   height: "24px",
                   borderRadius: "20px",
-                  border: "1px solid #8dc3faff",
+                  border: "1px solid #E6F0FA",
                 }}
               >
                 <Typography
@@ -804,7 +804,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
             {/* LỖi */}
             <Box
               sx={{
-                backgroundColor: " #D7D7D7",
+                backgroundColor: " #F4F5FA",
                 borderRadius: "6px",
                 p: 2,
                 gap: 12,
