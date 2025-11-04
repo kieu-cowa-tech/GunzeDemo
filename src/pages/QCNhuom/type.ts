@@ -1,5 +1,7 @@
 export type QCNhuom = {
     id: number;
+    ngayNhap:Date | string;
+    congNhan: string;
     maChi: string;
     mauChi:string;
     phanLoai:string;
@@ -15,6 +17,7 @@ export type QCNhuom = {
     pDVutRac:string;
     slKhac:number;
     pĐKhac:string;
+    doAm: number;
 }
 
 export type LOTInfo = {
@@ -35,7 +38,4 @@ export type Staff = {
     id: number;
     maNV: string;
     tenNV: string;
-    chucVu: string;
-    phongBan: string;
-    ghiChu: string;
 }

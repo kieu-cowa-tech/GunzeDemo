@@ -66,26 +66,28 @@ export default function TopBar() {
               gap: isMobile ? 1 : 0,
             }}
           >
-            <Box
-              component="img"
-              src={`${import.meta.env.BASE_URL}icons/logo.svg`}
-              alt="Logo"
-              sx={{
-                width: { xs: 24, sm: 28, md: 32 },
-                height: { xs: 24, sm: 28, md: 32 },
-              }}
-            />
-            {!isMobile && (
+            {isMobile && (
               <Box
                 component="img"
-                src={`${import.meta.env.BASE_URL}icons/cowatech-text.svg`}
+                src={`/assets/cowatech-text.svg`}
                 alt="Logo"
                 sx={{
-                  height: { sm: 16, md: 20 },
-                  width: "auto",
+                  width: { xs: 24, sm: 28, md: 32 },
+                  height: { xs: 24, sm: 28, md: 32 },
                 }}
               />
             )}
+
+            <Box
+              component="img"
+              src={`/assets/cowatech-text.svg`}
+              alt="Logo"
+              sx={{
+                height: { sm: 25, md: 30 },
+                width: "auto",
+              }}
+            />
+
             {isMobile && (
               <Typography
                 variant="h6"

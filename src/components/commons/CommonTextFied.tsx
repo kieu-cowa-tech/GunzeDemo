@@ -38,6 +38,21 @@ interface CommonTextFieldProps extends Omit<TextFieldProps, "variant" | "fullWid
    * Styles cho label
    */
   labelSx?: object;
+
+  /**
+   * Cho phép nhập nhiều dòng
+   */
+  multiline?: boolean;
+
+  /**
+   * Số dòng hiển thị (chỉ áp dụng khi multiline = true)
+   */
+  rows?: number;
+
+  /**
+   * Số dòng tối đa (chỉ áp dụng khi multiline = true)
+   */
+  maxRows?: number;
 }
 
 // Styles cho container bao bọc toàn bộ
@@ -88,10 +103,13 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
   label,
   required = false,
   unit,
-  showDropdownIcon = true,
+  showDropdownIcon = false,
   customEndAdornment: propCustomEndAdornment,
   containerSx,
   InputProps,
+  multiline = false,
+  rows,
+  maxRows,
   ...textFieldProps
 }) => {
   const mergedContainerSx = {
@@ -116,7 +134,7 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
     }
     
     // Default dropdown icon
-    return <ArrowDownIcon sx={{ color: "#999", fontSize: "20px" }} />;
+    return <></>;
   };
 
   const finalInputProps = {
@@ -158,6 +176,9 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
         variant="outlined"
         placeholder={`Nhập ${label.toLowerCase()}`}
         InputProps={finalInputProps}
+        multiline={multiline}
+        rows={rows}
+        maxRows={maxRows}
       />
     </Box>
   );

@@ -21,8 +21,8 @@ export default function QCNhuomPage() {
   }, [items]);
 console.log("items", items);
   const columns: Column<QCNhuom>[] = [
-    { key: "importDate", header: "Ngày nhập", sortable: true, minWidth: 160 },
-    { key: "User", header: "Công nhân", sortable: true, minWidth: 200 },
+    { key: "ngayNhap", header: "Ngày nhập", sortable: true, minWidth: 160 },
+    { key: "congNhan", header: "Công nhân", sortable: true, minWidth: 200 },
     { key: "maChi", header: "Mã Chỉ", sortable: true, minWidth: 100 },
     { key: "mauChi", header: "Màu Chỉ", minWidth: 140 },
     { key: "phanLoai", header: "Phân Loại", sortable: true, minWidth: 100 },

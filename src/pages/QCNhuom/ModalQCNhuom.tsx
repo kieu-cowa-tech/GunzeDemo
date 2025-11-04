@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,17 @@ import {
 import { Search } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { CommonTextField } from "../../components/commons/CommonTextFied";
-import type { QCNhuom } from "./type";
+import type { QCNhuom, Staff } from "./type";
+import { StaffData } from "./Data";
+import AsyncAutocomplete, {
+  type FetchResult,
+} from "../../components/commons/AutoComplete/AutoComplete";
 
 // Định nghĩa type cho form data
 type QCNhuomFormData = {
   id: number | null;
+  ngayNhap: Date | string;
+  congNhan: string;
   maChi: string;
   mauChi: string;
   phanLoai: string;
@@ -30,6 +36,7 @@ type QCNhuomFormData = {
   pDVutRac: string;
   slKhac: number;
   pĐKhac: string;
+  doAm: string;
 };
 
 interface QCNhuomModalProps {
@@ -94,9 +101,15 @@ const typogValueStyle = {
   fontWeight: 700,
   color: "#333",
   lineHeight: "24px",
-  
 };
-
+const typoLabelStyle = {
+  fontSize: "20px",
+  fontWeight: 700,
+  fontStyle: "normal",
+  color: "#333",
+  lineHeight: "28px",
+  mb: 2,
+};
 const modalContentStyle = {
   padding: "24px",
   display: "flex",
@@ -121,6 +134,10 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
   mode,
   loading = false,
 }) => {
+  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(
+    StaffData[0] || null
+  );
+
   const {
     control,
     handleSubmit,
@@ -129,6 +146,8 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
   } = useForm<QCNhuomFormData>({
     defaultValues: {
       id: null,
+      ngayNhap: "",
+      congNhan: "",
       maChi: "",
       mauChi: "",
       phanLoai: "",
@@ -144,8 +163,37 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       pDVutRac: "",
       slKhac: 0,
       pĐKhac: "",
+      doAm: "",
     },
   });
+
+  // Fetcher function cho AsyncAutocomplete
+  const fetchStaff = async (
+    query: string,
+    page: number,
+    pageSize: number,
+    signal: AbortSignal
+  ): Promise<FetchResult<Staff>> => {
+    // Simulate API call với delay
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    // Filter data theo query
+    const filtered = StaffData.filter(
+      (staff) =>
+        staff.tenNV.toLowerCase().includes(query.toLowerCase()) ||
+        staff.maNV.toLowerCase().includes(query.toLowerCase())
+    );
+
+    // Pagination
+    const start = page * pageSize;
+    const end = start + pageSize;
+    const paginatedItems = filtered.slice(start, end);
+
+    return {
+      items: paginatedItems,
+      total: filtered.length,
+    };
+  };
 
   // Reset form khi đóng modal hoặc thay đổi mode
   useEffect(() => {
@@ -220,18 +268,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
           <Box
             sx={{ mb: 1, borderBottom: "1px solid #E0E0E0", paddingBottom: 2 }}
           >
-            <Typography
-              sx={{
-                fontSize: "20px",
-                fontWeight: 700,
-                fontStyle: "normal",
-                color: "#333",
-                lineHeight: "28px",
-                mb: 2,
-              }}
-            >
-              Nhập Lot no
-            </Typography>
+            <Typography sx={{ ...typoLabelStyle }}>Nhập Lot no</Typography>
             <Box
               sx={{
                 display: "flex",
@@ -306,7 +343,9 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
           </Box>
 
           {/* Thông tin lot */}
-          <Box sx={{ mb: 3 ,borderBottom: "1px solid #E0E0E0", paddingBottom: 1 }}>
+          <Box
+            sx={{ mb: 3, borderBottom: "1px solid #E0E0E0", paddingBottom: 1 }}
+          >
             <Typography
               sx={{
                 fontSize: "20px",
@@ -338,7 +377,6 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
 
               {/* Màu chỉ */}
               <Box sx={{ ...LotBoxStyle }}>
-              
                 <Typography sx={{ ...typogKeyStyle }}>Màu chỉ</Typography>
                 <Typography sx={{ ...typogValueStyle }}>NCC9804</Typography>
               </Box>
@@ -350,7 +388,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
               </Box>
 
               {/* Nhà cung cấp nguyên liệu */}
-            <Box sx={{ ...LotBoxStyle }}>
+              <Box sx={{ ...LotBoxStyle }}>
                 <Typography sx={{ ...typogKeyStyle }}>
                   Nhà cung cấp nguyên liệu
                 </Typography>
@@ -359,293 +397,427 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
             </Box>
           </Box>
 
+          {/* Kết quả QC và Người kiểm tra */}
+          <Box
+            sx={{
+              mb: 2,
+              //borderBottom: "1px solid #E0E0E0",
+              paddingBottom: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                alignItems: { xs: "flex-start", sm: "flex-end" },
+                justifyContent: "space-between",
+                gap: 2,
+              }}
+            >
+              <Typography sx={{ ...typoLabelStyle, mb: 0 }}>
+                Kết quả QC
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  minWidth: { xs: "100%", sm: "350px" },
+                  width: { xs: "100%", sm: "auto" },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    color: "#666",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Người kiểm tra
+                </Typography>
+                <AsyncAutocomplete<Staff>
+                  label=""
+                  placeholder="Nhập tên để tìm kiếm..."
+                  value={selectedStaff}
+                  onChange={setSelectedStaff}
+                  fetcher={fetchStaff}
+                  getOptionLabel={(staff) => staff.tenNV}
+                  isOptionEqualToValue={(option, value) =>
+                    option.id === value.id
+                  }
+                  minLength={4}
+                  pageSize={20}
+                  debounceMs={300}
+                  sx={{
+                    flex: 1,
+                    "& .MuiOutlinedInput-root": {
+                      height: "40px",
+                      fontSize: "14px",
+                    },
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
           <form onSubmit={handleSubmit(handleFormSubmit)}>
-            {/* First Row */}
+            {/* Thông tin */}
             <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                gap: 3,
-              }}
+              sx={{ backgroundColor: " #747474", borderRadius: "6px", p: 2 }}
             >
-              <Controller
-                name="maChi"
-                control={control}
-                rules={{ required: "Mã chỉ là bắt buộc" }}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Mã chỉ"
-                    placeholder="Nhập mã chỉ"
-                    error={!!errors.maChi}
-                    helperText={errors.maChi?.message}
-                    required={true}
-                  />
-                )}
-              />
-              <Controller
-                name="mauChi"
-                control={control}
-                rules={{ required: "Màu chỉ là bắt buộc" }}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Màu chỉ"
-                    placeholder="Nhập màu chỉ"
-                    error={!!errors.mauChi}
-                    helperText={errors.mauChi?.message}
-                    required={true}
-                  />
-                )}
-              />
-            </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  p: 2,
+                  backgroundColor: "#8dc3faff",
+                  height: "24px",
+                  borderRadius: "20px",
+                  border: "1px solid #8dc3faff",
+                }}
+              >
+                {" "}
+                <Typography sx={{ ...typoLabelStyle, textAlign: "center",color:"#0A66C2",paddingTop:2 }}>
+                  Thông tin cơ bản
+                </Typography>
+              </Box>
+              {/* hidden Row */}
+              <Box
+                sx={{
+                  display: "none",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                }}
+              >
+                <Controller
+                  name="maChi"
+                  control={control}
+                  rules={{ required: "Mã chỉ là bắt buộc" }}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Mã chỉ"
+                      placeholder="Nhập mã chỉ"
+                      error={!!errors.maChi}
+                      helperText={errors.maChi?.message}
+                      required={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="mauChi"
+                  control={control}
+                  rules={{ required: "Màu chỉ là bắt buộc" }}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Màu chỉ"
+                      placeholder="Nhập màu chỉ"
+                      error={!!errors.mauChi}
+                      helperText={errors.mauChi?.message}
+                      required={true}
+                    />
+                  )}
+                />
+              </Box>
 
-            {/* Second Row */}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                gap: 3,
-                mt: 3,
-              }}
-            >
-              <Controller
-                name="phanLoai"
-                control={control}
-                rules={{ required: "Phân loại là bắt buộc" }}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Phân loại"
-                    placeholder="Nhập phân loại"
-                    error={!!errors.phanLoai}
-                    helperText={errors.phanLoai?.message}
-                    required={true}
-                  />
-                )}
-              />
+              {/* hidden Row */}
+              <Box
+                sx={{
+                  display: "none",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Controller
+                  name="phanLoai"
+                  control={control}
+                  rules={{ required: "Phân loại là bắt buộc" }}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Phân loại"
+                      placeholder="Nhập phân loại"
+                      error={!!errors.phanLoai}
+                      helperText={errors.phanLoai?.message}
+                      required={true}
+                    />
+                  )}
+                />
 
-              <Controller
-                name="nhaCungCap"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Nhà cung cấp"
-                    placeholder="Nhập nhà cung cấp"
-                    error={!!errors.nhaCungCap}
-                    helperText={errors.nhaCungCap?.message}
-                  />
-                )}
-              />
-            </Box>
+                <Controller
+                  name="nhaCungCap"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Nhà cung cấp"
+                      placeholder="Nhập nhà cung cấp"
+                      error={!!errors.nhaCungCap}
+                      helperText={errors.nhaCungCap?.message}
+                    />
+                  )}
+                />
+              </Box>
 
-            {/* Third Row */}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                gap: 3,
-                mt: 3,
-              }}
-            >
-              <Controller
-                name="lotNguyenLieu"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Lot nguyên liệu"
-                    placeholder="Nhập lot nguyên liệu"
-                    error={!!errors.lotNguyenLieu}
-                    helperText={errors.lotNguyenLieu?.message}
-                  />
-                )}
-              />
-              <Controller
-                name="checkGME"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Check GME"
-                    type="number"
-                    placeholder="Nhập check GME"
-                    error={!!errors.checkGME}
-                    helperText={errors.checkGME?.message}
-                  />
-                )}
-              />
+              {/* Row 1*/}
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Controller
+                  name="lotNguyenLieu"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Lot nguyên liệu"
+                      placeholder="Nhập lot nguyên liệu"
+                      error={!!errors.lotNguyenLieu}
+                      helperText={errors.lotNguyenLieu?.message}
+                      required={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="checkGME"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Check GME"
+                      type="number"
+                      placeholder="Nhập check GME"
+                      error={!!errors.checkGME}
+                      helperText={errors.checkGME?.message}
+                      required={true}
+                    />
+                  )}
+                />
+              </Box>
+              {/*  Row  2*/}
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Controller
+                  name="slOk"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="SL OK"
+                      type="number"
+                      placeholder="Nhập số lượng OK"
+                      error={!!errors.slOk}
+                      helperText={errors.slOk?.message}
+                      required={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="doAm"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Độ ẩm"
+                      type="number"
+                      placeholder="Nhập độ ẩm"
+                      error={!!errors.doAm}
+                      helperText={errors.doAm?.message}
+                      required={true}
+                    />
+                  )}
+                />
+              </Box>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Controller
+                  name="tong"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Tổng(kg)"
+                      type="number"
+                      placeholder="Nhập tổng (kg)"
+                      sx={{ height: "10vh" }}
+                      error={!!errors.tong}
+                      helperText={errors.tong?.message}
+                      required={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="ghiChu"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Ghi chú"
+                      placeholder="Nhập ghi chú"
+                      multiline={true}
+                      rows={3}
+                      maxRows={6}
+                      error={!!errors.ghiChu}
+                      helperText={errors.ghiChu?.message}
+                    />
+                  )}
+                />
+              </Box>
             </Box>
-            {/* 4 Row */}
+            {/* LỖi */}
             <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                gap: 3,
-                mt: 3,
-              }}
+              sx={{ backgroundColor: " #747474", borderRadius: "6px", p: 2,gap: 12, marginTop: 3 }}
             >
-              <Controller
-                name="slOk"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="SL OK"
-                    type="number"
-                    placeholder="Nhập số lượng OK"
-                    error={!!errors.slOk}
-                    helperText={errors.slOk?.message}
-                  />
-                )}
-              />
-              <Controller
-                name="tong"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Tổng"
-                    type="number"
-                    placeholder="Nhập tổng"
-                    error={!!errors.tong}
-                    helperText={errors.tong?.message}
-                  />
-                )}
-              />
-            </Box>
-            {/* 5 Row */}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                gap: 3,
-                mt: 3,
-              }}
-            >
-              <Controller
-                name="slBack"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="SL Back"
-                    type="number"
-                    placeholder="Nhập số lượng back"
-                    error={!!errors.slBack}
-                    helperText={errors.slBack?.message}
-                  />
-                )}
-              />
-              <Controller
-                name="pDBlack"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="PD Black"
-                    placeholder="Nhập PD Black"
-                    error={!!errors.pDBlack}
-                    helperText={errors.pDBlack?.message}
-                  />
-                )}
-              />
-            </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  p: 2,
+                  backgroundColor: "#FFECEC",
+                  height: "24px",
+                  borderRadius: "20px",
+                  border: "1px solid #FFECEC",
+                }}
+              >
+                <Typography sx={{ ...typoLabelStyle, textAlign: "center",color:"#FF0000", paddingTop:2 }}>
+                  Thông tin lỗi
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Controller
+                  name="slBack"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="SL Back"
+                      type="number"
+                      placeholder="Nhập số lượng back"
+                      error={!!errors.slBack}
+                      helperText={errors.slBack?.message}
+                      required={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="pDBlack"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="PD Black"
+                      placeholder="Nhập PD Black"
+                      error={!!errors.pDBlack}
+                      helperText={errors.pDBlack?.message}
+                    />
+                  )}
+                />
+              </Box>
 
-            {/* 6 Row */}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                gap: 3,
-                mt: 3,
-              }}
-            >
-              <Controller
-                name="slVutRac"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="SL Vụt rác"
-                    type="number"
-                    placeholder="Nhập số lượng vụt rác"
-                    error={!!errors.slVutRac}
-                    helperText={errors.slVutRac?.message}
-                  />
-                )}
-              />
-              <Controller
-                name="pDVutRac"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="PD Vụt rác"
-                    placeholder="Nhập PD vụt rác"
-                    error={!!errors.pDVutRac}
-                    helperText={errors.pDVutRac?.message}
-                  />
-                )}
-              />
-            </Box>
+              {/* 6 Row */}
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Controller
+                  name="slVutRac"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="SL Vụt rác"
+                      type="number"
+                      placeholder="Nhập số lượng vụt rác"
+                      error={!!errors.slVutRac}
+                      helperText={errors.slVutRac?.message}
+                      required={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="pDVutRac"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="PD Vụt rác"
+                      placeholder="Nhập PD vụt rác"
+                      error={!!errors.pDVutRac}
+                      helperText={errors.pDVutRac?.message}
+                    />
+                  )}
+                />
+              </Box>
 
-            {/* 7 Row */}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-                gap: 3,
-                mt: 3,
-              }}
-            >
-              <Controller
-                name="slKhac"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="SL Khác"
-                    type="number"
-                    placeholder="Nhập số lượng khác"
-                    error={!!errors.slKhac}
-                    helperText={errors.slKhac?.message}
-                  />
-                )}
-              />
-              <Controller
-                name="pĐKhac"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="PĐ Khác"
-                    placeholder="Nhập PĐ khác"
-                    error={!!errors.pĐKhac}
-                    helperText={errors.pĐKhac?.message}
-                  />
-                )}
-              />
-            </Box>
-
-            {/* 8 Row - Ghi chú */}
-            <Box sx={{ mt: 3 }}>
-              <Controller
-                name="ghiChu"
-                control={control}
-                render={({ field }) => (
-                  <CommonTextField
-                    {...field}
-                    label="Ghi chú"
-                    placeholder="Nhập ghi chú"
-                    multiline
-                    rows={3}
-                    error={!!errors.ghiChu}
-                    helperText={errors.ghiChu?.message}
-                  />
-                )}
-              />
+              {/* 7 Row */}
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Controller
+                  name="slKhac"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="SL Khác"
+                      type="number"
+                      placeholder="Nhập số lượng khác"
+                      error={!!errors.slKhac}
+                      helperText={errors.slKhac?.message}
+                      required={true}
+                    />
+                  )}
+                />
+                <Controller
+                  name="pĐKhac"
+                  control={control}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="PĐ Khác"
+                      placeholder="Nhập PĐ khác"
+                      error={!!errors.pĐKhac}
+                      helperText={errors.pĐKhac?.message}
+                    />
+                  )}
+                />
+              </Box>
             </Box>
 
             {/* Action Buttons */}
