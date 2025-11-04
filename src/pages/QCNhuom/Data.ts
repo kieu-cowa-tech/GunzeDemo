@@ -1,13 +1,14 @@
 import type { LOTInfo,Staff, QCNhuom } from "./type";
 
 export const LOTData: LOTInfo[] = [
-    { id: 1,  maLot: "LOT001", loaiChi: "Chi A", mauChi: 10, phanLoai: 5, nhaCungCap: 2, slKhac: 0, quyCach: "Quy cách 1", nguyenLieu: "Nguyên liệu 1", cd_kl:100, ghiChu: "Ghi chú 1" },
-    { id: 2,  maLot: "LOT002", loaiChi: "Chi B", mauChi: 15, phanLoai: 7, nhaCungCap: 3, slKhac: 1, quyCach: "Quy cách 2", nguyenLieu: "Nguyên liệu 2", cd_kl:150, ghiChu: "Ghi chú 2" },
+    { id: 1,  maLot: "LOT001", loaiChi: "T60", mauChi: "NNCC9804", phanLoai: "FINE", nhaCungCap: "SHANGHAI", slKhac: "0", quyCach: "Quy cách 1", nguyenLieu: "Nguyên liệu 1", cd_kl:"100", ghiChu: "Ghi chú 1" },
+    { id: 2,  maLot: "LOT002", loaiChi: "Chi B", mauChi: "15", phanLoai: "7", nhaCungCap: "3", slKhac: "1", quyCach: "Quy cách 2", nguyenLieu: "Nguyên liệu 2", cd_kl:"150", ghiChu: "Ghi chú 2" },
     // Thêm dữ liệu mẫu khác nếu cần
 ];
 
 export const StaffData: Staff[] = [
     { id: 1, maNV: "NV001", tenNV: "Trần Công Thắng"},
+    { id: 2, maNV: "NV002", tenNV: "Trần Thị B" },
     { id: 2, maNV: "NV002", tenNV: "Trần Thị B" },
     // Thêm dữ liệu mẫu khác nếu cần
 ];

@@ -24,13 +24,13 @@ export type LOTInfo = {
     id: number;
     maLot: string;
     loaiChi: string;
-    mauChi: number;
-    phanLoai: number;
-    nhaCungCap: number;
-    slKhac: number;
+    mauChi: string;
+    phanLoai: string;
+    nhaCungCap: string;
+    slKhac: string;
     quyCach: string;
     nguyenLieu: string;
-    cd_kl: number;
+    cd_kl: string;
     ghiChu: string;
 }
 

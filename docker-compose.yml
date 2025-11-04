@@ -1,0 +1,27 @@
+services:
+  gunzedemo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gunzedemo-app
+    ports:
+      - "2289:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+
+  # Development service (optional)
+  gunzedemo-dev:
+    image: node:20-alpine
+    container_name: gunzedemo-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3001:3000"
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=development
+    profiles:
+      - dev

@@ -53,10 +53,20 @@ interface CommonTextFieldProps extends Omit<TextFieldProps, "variant" | "fullWid
    * Số dòng tối đa (chỉ áp dụng khi multiline = true)
    */
   maxRows?: number;
+
+  /**
+   * Thông báo lỗi hoặc trợ giúp
+   */
+  helperText?: React.ReactNode;
+
+  /**
+   * Hiển thị trạng thái lỗi
+   */
+  error?: boolean;
 }
 
 // Styles cho container bao bọc toàn bộ
-const defaultContainerStyle = {
+const getDefaultContainerStyle = (hasError: boolean) => ({
   position: "relative",
   display: "flex",
   flexDirection: "column",
@@ -64,13 +74,13 @@ const defaultContainerStyle = {
   padding: "8px 12px",
   gap: "4px",
   borderRadius: "6px",
-  border: "1px solid #CCC",
+  border: hasError ? "1px solid #d32f2f" : "1px solid #CCC",
   backgroundColor: "#FFF",
   "&:hover": {
-    border: "1px solid #CCC",
+    border: hasError ? "1px solid #d32f2f" : "1px solid #999",
   },
   "&:focus-within": {
-    border: "1px solid #007FFF", // Màu khác khi focus
+    border: hasError ? "1px solid #d32f2f" : "1px solid #007FFF", // Màu khác khi focus
   },
   "& .MuiInputLabel-root": {
     display: "none", // Ẩn label mặc định của MUI
@@ -96,7 +106,7 @@ const defaultContainerStyle = {
       opacity: 1,
     },
   },
-};
+});
 
 
 export const CommonTextField: React.FC<CommonTextFieldProps> = ({
@@ -110,10 +120,12 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
   multiline = false,
   rows,
   maxRows,
+  helperText,
+  error = false,
   ...textFieldProps
 }) => {
   const mergedContainerSx = {
-    ...defaultContainerStyle,
+    ...getDefaultContainerStyle(error),
     ...containerSx,
   };
 
@@ -143,43 +155,62 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
   };
 
   return (
-    <Box sx={mergedContainerSx}>
-      {/* Label và required badge ở phía trên */}
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <Typography sx={{ 
-          fontSize: "16px", 
-          fontWeight: 500, 
-          color: "#333"
-        }}>
-          {label}
-        </Typography>
-        
-        {required && (
-          <Box sx={{
-            backgroundColor: "#FF9191",
-            color: "white",
-            fontSize: "12px",
-            fontWeight: 400,
-            padding: "2px 8px",
-            borderRadius: "12px",
-            whiteSpace: "nowrap"
+    <Box>
+      <Box sx={mergedContainerSx}>
+        {/* Label và required badge ở phía trên */}
+        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <Typography sx={{ 
+            fontSize: "12px", 
+            fontWeight: 500, 
+            fontStyle: "normal",
+            color: error ? "#d32f2f" : "#666"
           }}>
-            phải nhập
-          </Box>
-        )}
+            {label}
+          </Typography>
+          
+          {required && (
+            <Box sx={{
+              backgroundColor: "#FF9191",
+              color: "white",
+              fontSize: "12px",
+              fontWeight: 400,
+              padding: "2px 8px",
+              borderRadius: "12px",
+              whiteSpace: "nowrap"
+            }}>
+              phải nhập
+            </Box>
+          )}
+        </Box>
+        
+        {/* Input field không có border */}
+        <TextField
+          {...textFieldProps}
+          fullWidth
+          variant="outlined"
+          placeholder={`Nhập ${label.toLowerCase()}`}
+          InputProps={finalInputProps}
+          multiline={multiline}
+          rows={rows}
+          maxRows={maxRows}
+        />
       </Box>
       
-      {/* Input field không có border */}
-      <TextField
-        {...textFieldProps}
-        fullWidth
-        variant="outlined"
-        placeholder={`Nhập ${label.toLowerCase()}`}
-        InputProps={finalInputProps}
-        multiline={multiline}
-        rows={rows}
-        maxRows={maxRows}
-      />
+      {/* Helper text hiển thị bên ngoài container */}
+      {helperText && (
+        <Typography
+          sx={{
+            color: error ? "#d32f2f" : "#666",
+            fontSize: "12px",
+            fontWeight: 400,
+            marginTop: "4px",
+            marginLeft: "14px",
+            lineHeight: "14px",
+          }}
+        >
+          {helperText}
+        </Typography>
+      )}
     </Box>
   );
 };
