@@ -14,6 +14,8 @@ import { useQCNhuomStore } from "./pages/QCNhuom/store.ts";
 import type { QCNhuom } from "./pages/QCNhuom/type.ts";
 import type { QCNhuomFormData } from "./pages/QCNhuom/ModalQCNhuom.tsx";
 import { notify } from "./stores/notifyHost.ts";
+import ChuyenPage from "./pages/Chuyen/ChuyenPage.tsx";
+import QCThanhPhamPage from "./pages/QCThangPham/QCThanhPhamPage.tsx";
 
 export const AppContent: React.FC = () => {
   const { isQCNhuomModalOpen, closeQCNhuomModal } = useModal();
@@ -65,8 +67,8 @@ export const AppContent: React.FC = () => {
           >
             <Routes>
               <Route path="/" element={<QCNhuomPage />} />
-              {/* <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} /> */}
+             <Route path="/chuyen" element={<ChuyenPage />} />
+            { <Route path="/qc-thanh-pham" element={<QCThanhPhamPage />} /> }
             </Routes>
           </Container>
         </Box>

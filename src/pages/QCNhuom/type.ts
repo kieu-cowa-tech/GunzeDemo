@@ -29,7 +29,7 @@ export type LOTInfo = {
     nhaCungCap: string;
     slKhac: string;
     quyCach: string;
-    nguyenLieu: string;
+    nguyenLieu: number;
     cd_kl: string;
     ghiChu: string;
 }

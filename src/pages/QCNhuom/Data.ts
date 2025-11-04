@@ -1,8 +1,8 @@
 import type { LOTInfo,Staff, QCNhuom } from "./type";
 
 export const LOTData: LOTInfo[] = [
-    { id: 1,  maLot: "LOT001", loaiChi: "T60", mauChi: "NNCC9804", phanLoai: "FINE", nhaCungCap: "SHANGHAI", slKhac: "0", quyCach: "Quy cách 1", nguyenLieu: "Nguyên liệu 1", cd_kl:"100", ghiChu: "Ghi chú 1" },
-    { id: 2,  maLot: "LOT002", loaiChi: "Chi B", mauChi: "15", phanLoai: "7", nhaCungCap: "3", slKhac: "1", quyCach: "Quy cách 2", nguyenLieu: "Nguyên liệu 2", cd_kl:"150", ghiChu: "Ghi chú 2" },
+    { id: 1,  maLot: "LOT001", loaiChi: "T60", mauChi: "NNCC9804", phanLoai: "FINE", nhaCungCap: "SHANGHAI", slKhac: "0", quyCach: "Quy cách 1", nguyenLieu: 100, cd_kl:"100", ghiChu: "Ghi chú 1" },
+    { id: 2,  maLot: "LOT002", loaiChi: "Chi B", mauChi: "15", phanLoai: "7", nhaCungCap: "3", slKhac: "1", quyCach: "Quy cách 2", nguyenLieu: 100, cd_kl:"150", ghiChu: "Ghi chú 2" },
     // Thêm dữ liệu mẫu khác nếu cần
 ];
 
