@@ -7,8 +7,6 @@ import type { Column, RowAction } from "../../components/commons/Table/types";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
-import { Box, Button } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { ChuyenModal } from "./ModalChuyen";
 import type { ChuyenFormData } from "./ModalChuyen";
 import { notify } from "../../stores/notifyHost";
@@ -166,7 +164,7 @@ export default function ChuyenPage() {
 
   return (
     <>
-      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+      {/* <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -180,7 +178,7 @@ export default function ChuyenPage() {
         >
           Thêm mới
         </Button>
-      </Box>
+      </Box> */}
 
       <CommonTable<Chuyen>
         columns={columns}
