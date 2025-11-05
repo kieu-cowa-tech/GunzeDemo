@@ -97,7 +97,16 @@ const getDefaultContainerStyle = (hasError: boolean, isDisabled: boolean) => ({
     },
   },
 });
-
+const CustomDropdownIcon = (
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+       xmlns="http://www.w3.org/2000/svg">
+    <path d="M7 10.5L14 17.5L21 10.5"
+          stroke="#4E4E4E"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"/>
+  </svg>
+);
 
 export const CommonAutoComplete = <T,>({
   label,
@@ -170,6 +179,7 @@ export const CommonAutoComplete = <T,>({
         <Autocomplete
           {...autocompleteProps}
           disabled={disabled}
+          popupIcon={CustomDropdownIcon} 
           renderInput={(params) => (
             <TextField
               {...params}
