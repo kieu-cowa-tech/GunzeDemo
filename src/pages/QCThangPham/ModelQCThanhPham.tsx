@@ -31,6 +31,7 @@ export type QCThanhPhamFormData = {
     mauChi: string;
     lotThanhPham: string;
     soCuon: number | string;
+    soCuonOk: number | string;
     congNhan: string;
     maLoi1: string;
     loiCuon1: number | string;
@@ -61,8 +62,8 @@ interface QCThanhPhamModalProps {
 const modalStyle = {
   "& .MuiDialog-paper": {
     width: "600px",
-    maxWidth: "90vw",
-    maxHeight: "90vh",
+    maxWidth: "92vw",
+    maxHeight: "85vh",
     border: "12px solid #ffffff",
     backgroundColor: "#ffffff",
     padding: 0,
@@ -101,7 +102,7 @@ const LotBoxStyle = {
   textAlign: "center",
 };
 const typogKeyStyle = {
-  backgroundColor: "#F5F5F5",
+  backgroundColor: "#EBEBEB",
   fontSize: "16px",
   fontWeight: 500,
   color: "#666",
@@ -194,6 +195,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
       mauChi: "",
       lotThanhPham: "",
       soCuon: "",
+      soCuonOk: "",
       congNhan: "",
       maLoi1: "",
       loiCuon1: "",
@@ -240,6 +242,11 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
       // Điền thông tin vào các trường (chuyển đổi từ number sang string)
       setValue("maChi", found.loaiChi);
       setValue("mauChi", found.mauChi.toString());
+      setValue("congNhan", "Thắng");
+      setValue("quyCach", found.quyCach);
+      setValue("khoiLuong", 650);
+      setValue("cd_kl", found.cd_kl.toString());
+      setValue("maChiKH", found.loaiChi);
 
       console.log("Đã tìm thấy và điền thông tin Lot:", found);
     } else {
@@ -263,6 +270,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
         mauChi: editData.mauChi || "",
         lotThanhPham: editData.lotThanhPham || "",
         soCuon: editData.soCuon || 0,
+        soCuonOk: editData.soCuonOk || 0,
         congNhan: editData.congNhan || "",
         maLoi1: editData.maLoi1 || "",
         loiCuon1: editData.loiCuon1 || 0,
@@ -295,6 +303,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
         mauChi: "",
         lotThanhPham: "",
         soCuon: "",
+        soCuonOk: "",
         congNhan: "",
         maLoi1: "",
         loiCuon1: "",
@@ -352,6 +361,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
           sx={{
             width: { xs: 35, sm: 40, md: 45 },
             height: { xs: 35, sm: 40, md: 45 },
+            paddingRight: 1,
           }}
         />
         <Typography sx={modalTitleStyle}>{modalTitle}</Typography>
@@ -717,10 +727,10 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
                   name="soCuon"
                   control={control}
                   rules={{
-                    required: "Số cuộn là bắt buộc",
+                    required: "Số cuộn kiểm tra là bắt buộc",
                     min: {
                       value: 0,
-                      message: "Số cuộn phải lớn hơn hoặc bằng 0"
+                      message: "Số cuộn kiểm tra phải lớn hơn hoặc bằng 0"
                     }
                   }}
                   render={({ field }) => (
@@ -737,7 +747,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
                   )}
                 />
                 <Controller
-                  name="khoiLuong"
+                  name="soCuonOk"
                   control={control}
                   rules={{
                     required: "Số cuộn OK là bắt buộc",

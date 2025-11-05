@@ -56,8 +56,8 @@ interface ChuyenModalProps {
 const modalStyle = {
   "& .MuiDialog-paper": {
     width: "600px",
-    maxWidth: "90vw",
-    maxHeight: "90vh",
+    maxWidth: "92vw",
+    maxHeight: "85vh",
     border: "12px solid #ffffff",
     backgroundColor: "#ffffff",
     padding: 0,
@@ -92,11 +92,12 @@ const LotBoxStyle = {
   borderRadius: "6px",
   display: "flex",
   flexDirection: "column",
-  gap: 0.5,
+  gap: 1,
+ // alignItems: "flex-center",
   textAlign: "center",
 };
 const typogKeyStyle = {
-  backgroundColor: "#F5F5F5",
+  backgroundColor: "#EBEBEB",
   fontSize: "16px",
   fontWeight: 500,
   color: "#666",
@@ -131,6 +132,7 @@ const buttonContainerStyle = {
   display: "flex",
   justifyContent: "flex-end",
   gap: 2,
+  height: "88px",
   padding: "16px 24px",
   borderTop: "1px solid #E0E0E0",
   backgroundColor: "#ffffff",
@@ -231,7 +233,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
       setValue("mauChi", found.mauChi.toString());
       setValue("nguyenVatLieu", found.nguyenLieu);
       setValue("nhaCungCap", found.nhaCungCap.toString());
-      setValue("tong", 22.5);
+      setValue("ca", 2);
       setValue("trongLuong", 19.5);
       setValue("congNhan", "Trần Công Thắng"); // Mặc định công nhân sau khi tra cứu thành công
 
@@ -324,7 +326,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
   };
 
   // Xác định title và button text dựa trên mode
-  const modalTitle = mode === "add" ? "Kết quả chuyển" : "Chỉnh Sửa Chuyển";
+  const modalTitle = mode === "add" ? "Kết quả chuyền" : "Sửa kết quả chuyền";
 
   return (
     <Dialog
@@ -342,6 +344,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
           sx={{
             width: { xs: 35, sm: 40, md: 45 },
             height: { xs: 35, sm: 40, md: 45 },
+            paddingRight: 1,
           }}
         />
         <Typography sx={modalTitleStyle}>{modalTitle}</Typography>
@@ -660,7 +663,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
                     paddingTop: 2,
                   }}
                 >
-                  Kết quả chuyển
+                  Kết quả chuyền
                 </Typography>
               </Box>
               {/* Row 1: Ca và CDKL */}
@@ -746,6 +749,10 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
                       placeholder="Nhập rác trừ lỗi"
                       error={!!errors.racTruLoi}
                       helperText={errors.racTruLoi?.message}
+                      onBlur={()=>{
+                        const valueTrongLuong=(19.5+ (Number(field.value) || 0));
+                        setValue("tong", valueTrongLuong );
+                      }}
                       required={true}
                       disabled={!isFormEnabled}
                     />
@@ -944,6 +951,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
               fontSize: "18px",
               fontWeight: 500,
               borderRadius: "50px",
+              height: "48px",
               minWidth: "120px",
               px: 3,
               py: 1.5,
@@ -966,6 +974,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
               fontWeight: 500,
               borderRadius: "50px",
               minWidth: "120px",
+              height: "48px",
               px: 3,
               py: 1.5,
               backgroundColor: "#002194",

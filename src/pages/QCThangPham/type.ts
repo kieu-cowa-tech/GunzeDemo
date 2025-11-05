@@ -6,6 +6,7 @@ export type QCThanhPham = {
     mauChi:string;
     lotThanhPham:string;
     soCuon:number;
+    soCuonOk:number;
     congNhan: string;
     maLoi1:string;
     loiCuon1:number;
@@ -46,7 +47,8 @@ export const QCThanhPhamData: QCThanhPham[] = [
         cd_kl: 200,
         maChiKH: "701",
         rac: 1,
-        ghiChu: "Ghi chú 1"
+        ghiChu: "Ghi chú 1",
+        soCuonOk: 99
     },
     {
         id: 2,
@@ -70,7 +72,8 @@ export const QCThanhPhamData: QCThanhPham[] = [
         cd_kl: 400,
         maChiKH: "1630",
         rac: 1,
-        ghiChu: "Ghi chú 1"
+        ghiChu: "Ghi chú 1",
+        soCuonOk: 16
     },
     {
         id: 3,
@@ -94,6 +97,7 @@ export const QCThanhPhamData: QCThanhPham[] = [
         cd_kl: 200,
         maChiKH: "701",
         rac: 1,
-        ghiChu: "Ghi chú 1"
+        ghiChu: "Ghi chú 1",
+        soCuonOk: 4
     }
 ];

@@ -57,8 +57,8 @@ interface QCNhuomModalProps {
 const modalStyle = {
   "& .MuiDialog-paper": {
     width: "600px",
-    maxWidth: "90vw",
-    maxHeight: "90vh",
+    maxWidth: "92vw",
+    maxHeight: "85vh",
     border: "12px solid #ffffff",
     backgroundColor: "#ffffff",
     padding: 0,
@@ -97,7 +97,7 @@ const LotBoxStyle = {
   textAlign: "center",
 };
 const typogKeyStyle = {
-  backgroundColor: "#F5F5F5",
+  backgroundColor: "##EBEBEB",
   fontSize: "16px",
   fontWeight: 500,
   color: "#666",
@@ -130,6 +130,7 @@ const modalContentStyle = {
 // Button styles - Footer fixed
 const buttonContainerStyle = {
   display: "flex",
+  height: "88px",
   justifyContent: "flex-end",
   gap: 2,
   padding: "16px 24px",
@@ -155,14 +156,15 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
   const [lotSearchError, setLotSearchError] = useState<string>("");
   const [isLotInfoExpanded, setIsLotInfoExpanded] = useState<boolean>(false);
   const [isFormEnabled, setIsFormEnabled] = useState<boolean>(false);
+  const [searchLotValue, setSearchLotValue] = useState<string>(""); // State riêng cho input search
 
   // Tạo today memoized để tránh warning dependency
   const today = React.useMemo(() => new Date(), []);
 
   // Hàm format ngày sang dd/MM/yyyy
   const formatDateToDDMMYYYY = (date: Date): string => {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
@@ -178,7 +180,6 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
     handleSubmit,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<QCNhuomFormData>({
     defaultValues: {
@@ -207,9 +208,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
 
   // Hàm tìm kiếm Lot nguyên liệu
   const handleLotSearch = () => {
-    const lotNguyenLieu = watch("lotNguyenLieu");
-
-    if (!lotNguyenLieu || lotNguyenLieu.trim() === "") {
+    if (!searchLotValue || searchLotValue.trim() === "") {
       setLotSearchError("Vui lòng nhập mã Lot nguyên liệu");
       setFoundLot(null);
       setIsFormEnabled(false);
@@ -219,7 +218,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
     // Tìm kiếm trong LOTData
     const found = LOTData.find(
       (lot) =>
-        lot.maLot.toLowerCase().trim() === lotNguyenLieu.toLowerCase().trim()
+        lot.maLot.toLowerCase().trim() === searchLotValue.toLowerCase().trim()
     );
 
     if (found) {
@@ -234,16 +233,15 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       setValue("mauChi", found.mauChi.toString());
       setValue("phanLoai", found.phanLoai.toString());
       setValue("nhaCungCap", found.nhaCungCap.toString());
+      setValue("lotNguyenLieu", found.maLot.toString());
 
       console.log("Đã tìm thấy và điền thông tin Lot:", found);
     } else {
       setFoundLot(null);
       setIsFormEnabled(false);
-      setLotSearchError(`Không tìm thấy Lot nguyên liệu: ${lotNguyenLieu}`);
+      setLotSearchError(`Không tìm thấy Lot nguyên liệu: ${searchLotValue}`);
     }
   };
-
-
 
   // Reset form khi đóng modal hoặc thay đổi mode
   useEffect(() => {
@@ -270,11 +268,18 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
         pĐKhac: editData.pĐKhac || "",
         doAm: editData.doAm || 0,
       });
-      
+      setSearchLotValue(editData.lotNguyenLieu || "");
+      const foundEdit = LOTData.find(
+        (lot) =>
+          lot.maLot.toLowerCase().trim() === editData.lotNguyenLieu.toLowerCase().trim()
+      );
+      setFoundLot(foundEdit|| null);
       // Tìm staff tương ứng để hiển thị trong AsyncAutocomplete
-      const staff = StaffData.find(s => s.tenNV === editData.congNhan || s.maNV === editData.congNhan);
+      const staff = StaffData.find(
+        (s) => s.tenNV === editData.congNhan || s.maNV === editData.congNhan
+      );
       setSelectedStaff(staff || null);
-      
+
       // Enable form khi ở chế độ edit
       setIsFormEnabled(true);
     } else {
@@ -301,11 +306,12 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
         doAm: "",
       });
       setSelectedStaff(null);
-      
+
       // Disable form khi thêm mới
       setIsFormEnabled(false);
       setFoundLot(null);
       setLotSearchError("");
+      setSearchLotValue(""); // Reset search input
     }
   }, [mode, editData, reset, today]);
 
@@ -319,20 +325,24 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
     reset();
     onClose();
   };
-    // Chặn đóng modal khi click ra ngoài
+  // Chặn đóng modal khi click ra ngoài
   const handleDialogClose = (_event: object, reason: string) => {
-    if (reason === 'backdropClick') {
+    if (reason === "backdropClick") {
       return; // Không làm gì khi click vào backdrop
     }
     onClose();
   };
 
-
   // Xác định title và button text dựa trên mode
   const modalTitle = mode === "add" ? "Kết quả QC Nhuộm" : "Chỉnh Sửa QC Nhuộm";
 
   return (
-    <Dialog open={open} onClose={handleDialogClose} sx={modalStyle} maxWidth={false}>
+    <Dialog
+      open={open}
+      onClose={handleDialogClose}
+      sx={modalStyle}
+      maxWidth={false}
+    >
       {/* Modal Header */}
       <Box sx={modalHeaderStyle}>
         <Box
@@ -342,13 +352,22 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
           sx={{
             width: { xs: 35, sm: 40, md: 45 },
             height: { xs: 35, sm: 40, md: 45 },
+            paddingRight: 1,
           }}
         />
         <Typography sx={modalTitleStyle}>{modalTitle}</Typography>
       </Box>
 
       {/* Modal Content */}
-      <DialogContent sx={{ padding: 0, flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+      <DialogContent
+        sx={{
+          padding: 0,
+          flex: 1,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Box sx={modalContentStyle}>
           {/* Nhập Lot */}
           <Box
@@ -362,60 +381,54 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                 alignItems: "flex-start",
               }}
             >
-              <Controller
-                name="lotNguyenLieu"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    type="string"
-                    placeholder="Lot no"
-                    fullWidth
-                    error={!!lotSearchError}
-                    helperText={lotSearchError}
-                    onChange={(e) => {
-                      field.onChange(e);
-                      if (lotSearchError) {
-                        setLotSearchError(""); // Xóa lỗi khi người dùng bắt đầu nhập
-                      }
-                    }}
-                    sx={{
-                      flex: 1,
-                      "& .MuiOutlinedInput-root": {
-                        height: "48px",
-                        borderRadius: "6px",
-                        backgroundColor: "#FFF",
-                        "& fieldset": {
-                          borderColor: lotSearchError ? "#d32f2f" : "#CCC",
-                        },
-                        "&:hover fieldset": {
-                          borderColor: lotSearchError ? "#d32f2f" : "#999",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: lotSearchError ? "#d32f2f" : "#007FFF",
-                        },
-                        "&.Mui-disabled": {
-                          backgroundColor: "#EBEBEB",
-                        },
-                      },
-                      "& .MuiOutlinedInput-input": {
-                        padding: "12px 16px",
-                        fontSize: "16px",
-                        color: "#333",
-                        "&::placeholder": {
-                          color: "#999",
-                          opacity: 1,
-                        },
-                      },
-                      "& .MuiFormHelperText-root": {
-                        color: "#d32f2f",
-                        fontSize: "14px",
-                        marginTop: "4px",
-                        marginLeft: "14px",
-                      },
-                    }}
-                  />
-                )}
+              <TextField
+                value={searchLotValue}
+                onChange={(e) => {
+                  setSearchLotValue(e.target.value);
+                  if (lotSearchError) {
+                    setLotSearchError(""); // Xóa lỗi khi người dùng bắt đầu nhập
+                  }
+                }}
+                type="string"
+                placeholder="Lot no"
+                fullWidth
+                error={!!lotSearchError}
+                helperText={lotSearchError}
+                sx={{
+                  flex: 1,
+                  "& .MuiOutlinedInput-root": {
+                    height: "48px",
+                    borderRadius: "6px",
+                    backgroundColor: "#FFF",
+                    "& fieldset": {
+                      borderColor: lotSearchError ? "#d32f2f" : "#CCC",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: lotSearchError ? "#d32f2f" : "#999",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: lotSearchError ? "#d32f2f" : "#007FFF",
+                    },
+                    "&.Mui-disabled": {
+                      backgroundColor: "#EBEBEB",
+                    },
+                  },
+                  "& .MuiOutlinedInput-input": {
+                    padding: "12px 16px",
+                    fontSize: "16px",
+                    color: "#333",
+                    "&::placeholder": {
+                      color: "#999",
+                      opacity: 1,
+                    },
+                  },
+                  "& .MuiFormHelperText-root": {
+                    color: "#d32f2f",
+                    fontSize: "14px",
+                    marginTop: "4px",
+                    marginLeft: "14px",
+                  },
+                }}
               />
 
               <Button
@@ -605,14 +618,17 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                               "& .MuiOutlinedInput-root": {
                                 height: "40px",
                                 fontSize: "14px",
-                                backgroundColor: !isFormEnabled ? "#EBEBEB" : "#FFF",
+                                backgroundColor: !isFormEnabled
+                                  ? "#EBEBEB"
+                                  : "#FFF",
                               },
                             }}
                           />
                         )}
                         sx={{ flex: 1 }}
                       />
-                    )}/>
+                    )}
+                  />
                 </Box>
               </Box>
             </Box>
@@ -657,7 +673,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                   name="lotNguyenLieu"
                   control={control}
                   rules={{
-                    required: "Lot nguyên liệu là bắt buộc"
+                    required: "Lot nguyên liệu là bắt buộc",
                   }}
                   render={({ field }) => (
                     <CommonTextField
@@ -678,8 +694,8 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                     required: "Check GME là bắt buộc",
                     min: {
                       value: 0,
-                      message: "Check GME phải lớn hơn hoặc bằng 0"
-                    }
+                      message: "Check GME phải lớn hơn hoặc bằng 0",
+                    },
                   }}
                   render={({ field }) => (
                     <CommonTextField
@@ -711,8 +727,8 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                     required: "SL OK là bắt buộc",
                     min: {
                       value: 0,
-                      message: "SL OK phải lớn hơn hoặc bằng 0"
-                    }
+                      message: "SL OK phải lớn hơn hoặc bằng 0",
+                    },
                   }}
                   render={({ field }) => (
                     <CommonTextField
@@ -734,8 +750,8 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                     required: "Độ ẩm là bắt buộc",
                     min: {
                       value: 0,
-                      message: "Độ ẩm phải lớn hơn hoặc bằng 0"
-                    }
+                      message: "Độ ẩm phải lớn hơn hoặc bằng 0",
+                    },
                   }}
                   render={({ field }) => (
                     <CommonTextField
@@ -766,8 +782,8 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                     required: "Tổng (kg) là bắt buộc",
                     min: {
                       value: 0,
-                      message: "Tổng (kg) phải lớn hơn hoặc bằng 0"
-                    }
+                      message: "Tổng (kg) phải lớn hơn hoặc bằng 0",
+                    },
                   }}
                   render={({ field }) => (
                     <CommonTextField
@@ -845,22 +861,15 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                 <Controller
                   name="slBack"
                   control={control}
-                  rules={{
-                    required: "Số lượng BACK là bắt buộc",
-                    min: {
-                      value: 0,
-                      message: "Số lượng BACK phải lớn hơn hoặc bằng 0"
-                    }
-                  }}
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="Số lượng BACK (cuộn)"
+                      label="Số lượng BLACK (cuộn)"
                       type="number"
-                      placeholder="Nhập số lượng BACK"
+                      placeholder="Nhập số lượng BLACK"
                       error={!!errors.slBack}
                       helperText={errors.slBack?.message}
-                      required={true}
+                      //required={true}
                       disabled={!isFormEnabled}
                     />
                   )}
@@ -896,13 +905,6 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                 <Controller
                   name="slVutRac"
                   control={control}
-                  rules={{
-                    required: "Số lượng vứt rác là bắt buộc",
-                    min: {
-                      value: 0,
-                      message: "Số lượng vứt rác phải lớn hơn hoặc bằng 0"
-                    }
-                  }}
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
@@ -911,7 +913,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       placeholder="Nhập số lượng vứt rác"
                       error={!!errors.slVutRac}
                       helperText={errors.slVutRac?.message}
-                      required={true}
+                      // required={true}
                       disabled={!isFormEnabled}
                     />
                   )}
@@ -947,13 +949,6 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                 <Controller
                   name="slKhac"
                   control={control}
-                  rules={{
-                    required: "Số lượng NG khác là bắt buộc",
-                    min: {
-                      value: 0,
-                      message: "Số lượng NG khác phải lớn hơn hoặc bằng 0"
-                    }
-                  }}
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
@@ -962,7 +957,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       placeholder="Nhập số lượng khác"
                       error={!!errors.slKhac}
                       helperText={errors.slKhac?.message}
-                      required={true}
+                      // required={true}
                       disabled={!isFormEnabled}
                     />
                   )}
@@ -977,7 +972,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                       placeholder="Nhập lý do khác"
                       multiline={true}
                       rows={2}
-                      maxRows={3}
+                      maxRows={2}
                       error={!!errors.pĐKhac}
                       helperText={errors.pĐKhac?.message}
                       disabled={!isFormEnabled}
@@ -1000,6 +995,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
               fontSize: "18px",
               fontWeight: 500,
               borderRadius: "50px",
+              height: "48px",
               minWidth: "120px",
               px: 3,
               py: 1.5,
@@ -1021,6 +1017,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
               fontSize: "18px",
               fontWeight: 500,
               borderRadius: "50px",
+              height: "48px",
               minWidth: "120px",
               px: 3,
               py: 1.5,

@@ -105,6 +105,7 @@ export const AppContent: React.FC = () => {
       ...formData,
       id: Date.now(),
       soCuon: typeof formData.soCuon === "string" ? Number(formData.soCuon) || 0 : formData.soCuon,
+      soCuonOk: typeof formData.soCuon === "string" ? Number(formData.soCuon) || 0 : formData.soCuon,
       loiCuon1: typeof formData.loiCuon1 === "string" ? Number(formData.loiCuon1) || 0 : formData.loiCuon1,
       loiCuon2: typeof formData.loiCuon2 === "string" ? Number(formData.loiCuon2) || 0 : formData.loiCuon2,
       loiCuon3: typeof formData.loiCuon3 === "string" ? Number(formData.loiCuon3) || 0 : formData.loiCuon3,
@@ -116,7 +117,7 @@ export const AppContent: React.FC = () => {
     addQCThanhPhamItem(newItem);
 
     closeQCThanhPhamModal();
-    notify.success("Lưu kết quả QC Thành phẩm thành công!");
+    notify.success("Lưu kết quả QC thành phẩm thành công!");
   };
 
   return (

@@ -45,6 +45,7 @@ export default function QCThanhPhamPage() {
       ...formData,
       id: formData.id || 0,
       soCuon: typeof formData.soCuon === 'string' ? Number(formData.soCuon) || 0 : formData.soCuon,
+      soCuonOk: typeof formData.soCuonOk === 'string' ? Number(formData.soCuonOk) || 0 : formData.soCuonOk,
       loiCuon1: typeof formData.loiCuon1 === 'string' ? Number(formData.loiCuon1) || 0 : formData.loiCuon1,
       loiCuon2: typeof formData.loiCuon2 === 'string' ? Number(formData.loiCuon2) || 0 : formData.loiCuon2,
       loiCuon3: typeof formData.loiCuon3 === 'string' ? Number(formData.loiCuon3) || 0 : formData.loiCuon3,
@@ -62,7 +63,7 @@ export default function QCThanhPhamPage() {
         id: newId,
       };
       addItem(newItem);
-      notify.success("Thêm mới kết quả QC Thành Phẩm thành công!");
+      notify.success("Lưu kết quả QC Thành Phẩm thành công!");
       console.log("Đã thêm mới kết quả QC Thành Phẩm:", newItem);
     } else if (modalMode === "edit" && editingItem) {
       const updatedItem: QCThanhPham = {
@@ -81,20 +82,22 @@ export default function QCThanhPhamPage() {
     { key: "mauChi", header: "Màu chỉ", sortable: true, minWidth: 110 },
     { key: "lotThanhPham", header: "Lot TP", sortable: true, minWidth: 100 },
     { key: "soCuon", header: "Số cuộn", sortable: true, minWidth: 110 },
+    { key: "soCuonOk", header: "Số cuộn OK", sortable: true, minWidth: 110 },
     { key: "congNhan", header: "Công nhân", sortable: true, minWidth: 120 },
     { key: "maLoi1", header: "Mã lỗi 1", sortable: true, minWidth: 105 },
-    { key: "loiCuon1", header: "Lỗi cuộn 1", sortable: true, minWidth: 120 },
+    { key: "loiCuon1", header: "Số lượng NG 1", sortable: true, minWidth: 120 },
     { key: "maLoi2", header: "Mã lỗi 2", sortable: true, minWidth: 105 },
-    { key: "loiCuon2", header: "Lỗi cuộn 2", sortable: true, minWidth: 120 },
+    { key: "loiCuon2", header: "Số lượng NG 2", sortable: true, minWidth: 120 },
     { key: "maLoi3", header: "Mã lỗi 3", sortable: true, minWidth: 105 },
-    { key: "loiCuon3", header: "Lỗi cuộn 3", sortable: true, minWidth: 120},
+    { key: "loiCuon3", header: "Số lượng NG 3", sortable: true, minWidth: 120},
     { key: "maLoi4", header: "Mã lỗi 4", sortable: true, minWidth: 105 },
-    { key: "loiCuon4", header: "Lỗi cuộn 4", sortable: true, minWidth: 120 },
+    { key: "loiCuon4", header: "Số lượng NG 4", sortable: true, minWidth: 120 },
     { key: "quyCach", header: "Quy cách", sortable: true, minWidth: 100 },
     { key: "khoiLuong", header: "Khối lượng", sortable: true, minWidth: 100 },
     { key: "cd_kl", header: "CD/KL", sortable: true, minWidth: 100 },
     { key: "maChiKH", header: "Mã chỉ KH", sortable: true, minWidth: 100 },
     { key: "rac", header: "Rác", sortable: true, minWidth: 100 },
+    { key: "ghiChu", header: "Ghi chú", sortable: true, minWidth: 100 },
   ];
 
   //     const onBatchDelete = async () => {
