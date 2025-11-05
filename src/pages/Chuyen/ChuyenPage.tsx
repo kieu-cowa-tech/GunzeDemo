@@ -35,11 +35,11 @@ export default function ChuyenPage() {
     setIsModalOpen(true);
   };
 
-  const handleOpenAddModal = () => {
-    setModalMode("add");
-    setEditingItem(null);
-    setIsModalOpen(true);
-  };
+  // const handleOpenAddModal = () => {
+  //   setModalMode("add");
+  //   setEditingItem(null);
+  //   setIsModalOpen(true);
+  // };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
