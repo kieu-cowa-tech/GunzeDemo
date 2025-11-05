@@ -279,9 +279,15 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
         (s) => s.tenNV === editData.congNhan || s.maNV === editData.congNhan
       );
       setSelectedStaff(staff || null);
+      
+      // Cập nhật giá trị vào form field congNhan
+      if (staff) {
+        setValue("congNhan", staff.tenNV);
+      }
 
       // Enable form khi ở chế độ edit
       setIsFormEnabled(true);
+      setIsLotInfoExpanded(true); // Mở rộng thông tin lot khi edit
     } else {
       // Reset về giá trị mặc định cho chế độ thêm mới
       reset({
@@ -312,8 +318,9 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       setFoundLot(null);
       setLotSearchError("");
       setSearchLotValue(""); // Reset search input
+      setIsLotInfoExpanded(false); // Đóng section thông tin lot
     }
-  }, [mode, editData, reset, today]);
+  }, [mode, editData, reset, today, setValue]);
 const CustomDropdownIcon = (
   <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
        xmlns="http://www.w3.org/2000/svg">
@@ -326,12 +333,20 @@ const CustomDropdownIcon = (
 );
   const handleFormSubmit = (data: QCNhuomFormData) => {
     onSubmit(data);
+    setFoundLot(null);
+    setSearchLotValue("");
+    setIsLotInfoExpanded(false);
+    setLotSearchError("");
     reset();
     onClose();
   };
 
   const handleCancel = () => {
     reset();
+    setFoundLot(null);
+    setSearchLotValue("");
+    setIsLotInfoExpanded(false);
+    setLotSearchError("");
     onClose();
   };
   // Chặn đóng modal khi click ra ngoài
@@ -590,6 +605,7 @@ const CustomDropdownIcon = (
                   sx={{
                     display: "flex",
                     alignItems: "center",
+                    flexDirection: "row",
                     gap: 2,
                     minWidth: { xs: "100%", sm: "350px" },
                     width: { xs: "100%", sm: "auto" },
@@ -604,10 +620,14 @@ const CustomDropdownIcon = (
                     }}
                   >
                     Người kiểm tra
+                    <span style={{ color: "#d32f2f", marginLeft: "4px" }}>*</span>
                   </Typography>
                   <Controller
                     name="congNhan"
                     control={control}
+                    rules={{
+                      required: "Người kiểm tra là bắt buộc",
+                    }}
                     render={({ field }) => (
                       <Autocomplete<Staff>
                         {...field}
@@ -619,11 +639,14 @@ const CustomDropdownIcon = (
                         isOptionEqualToValue={(option, value) =>
                           option.id === value.id
                         }
+                        
                         disabled={!isFormEnabled}
                         renderInput={(params) => (
                           <TextField
                             {...params}
                             placeholder="Nhập tên để tìm kiếm..."
+                            error={!!errors.congNhan}
+                            helperText={errors.congNhan?.message}
                             sx={{
                               "& .MuiOutlinedInput-root": {
                                 height: "40px",

@@ -8,8 +8,9 @@ export const LOTData: LOTInfo[] = [
 
 export const StaffData: Staff[] = [
     { id: 1, maNV: "NV001", tenNV: "Trần Công Thắng"},
-    { id: 2, maNV: "NV002", tenNV: "Trần Thị B" },
-    { id: 2, maNV: "NV002", tenNV: "Trần Thị B" },
+    { id: 2, maNV: "NV002", tenNV: "Nguyễn Văn B" },
+    { id: 3, maNV: "NV003", tenNV: "Nguyễn Văn A" },
+    { id: 4, maNV: "NV004", tenNV: "Nguyễn Văn C" },
     // Thêm dữ liệu mẫu khác nếu cần
 ];
 
