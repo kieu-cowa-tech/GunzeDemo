@@ -8,15 +8,15 @@ export const LOTData: LOTInfo[] = [
 
 export const StaffData: Staff[] = [
     { id: 1, maNV: "NV001", tenNV: "Trần Công Thắng"},
-    { id: 2, maNV: "NV002", tenNV: "Nguyễn Văn B" },
-    { id: 3, maNV: "NV003", tenNV: "Nguyễn Văn A" },
-    { id: 4, maNV: "NV004", tenNV: "Nguyễn Văn C" },
+    { id: 2, maNV: "NV002", tenNV: "Nguyễn Văn Bình" },
+    { id: 3, maNV: "NV003", tenNV: "Nguyễn Văn An" },
+    { id: 4, maNV: "NV004", tenNV: "Trần Thị Hải" },
     // Thêm dữ liệu mẫu khác nếu cần
 ];
 
 export const QCNhuomData: QCNhuom[] = [
-    { id: 1, ngayNhap:"04/11/2025", congNhan: "Nguyễn Văn A",maChi: "C001", mauChi: "Đỏ", phanLoai: "Loại 1", nhaCungCap: "NCC A", lotNguyenLieu: "LOT001", checkGME: 1, slOk: 100, tong: 120, ghiChu: "Ghi chú 1", slBack: 5, pDBlack: "4.17%", slVutRac: 10, pDVutRac: "8.33%", slKhac: 5, pĐKhac: "4.17%", doAm: 12 },
-    { id: 2, ngayNhap:"04/11/2025", congNhan: "Nguyễn Văn B",maChi: "C002", mauChi: "Xanh", phanLoai: "Loại 2", nhaCungCap: "NCC B", lotNguyenLieu: "LOT002", checkGME: 0, slOk: 150, tong: 180, ghiChu: "Ghi chú 2", slBack: 8, pDBlack: "4.44%", slVutRac: 15, pDVutRac: "8.33%", slKhac: 7, pĐKhac: "3.89%", doAm: 10 },
+    { id: 1, ngayNhap:"04/11/2025", congNhan: "Nguyễn Văn An",maChi: "C001", mauChi: "Đỏ", phanLoai: "Loại 1", nhaCungCap: "NCC A", lotNguyenLieu: "LOT001", checkGME: 1, slOk: 100, tong: 120, ghiChu: "Ghi chú 1", slBack: 5, pDBlack: "4.17%", slVutRac: 10, pDVutRac: "8.33%", slKhac: 5, pĐKhac: "4.17%", doAm: 12 },
+    { id: 2, ngayNhap:"04/11/2025", congNhan: "Nguyễn Văn Bình",maChi: "C002", mauChi: "Xanh", phanLoai: "Loại 2", nhaCungCap: "NCC B", lotNguyenLieu: "LOT002", checkGME: 0, slOk: 150, tong: 180, ghiChu: "Ghi chú 2", slBack: 8, pDBlack: "4.44%", slVutRac: 15, pDVutRac: "8.33%", slKhac: 7, pĐKhac: "3.89%", doAm: 10 },
     // Thêm dữ liệu mẫu khác nếu cần
 ];
 
