@@ -591,11 +591,10 @@ const CustomDropdownIcon = (
             >
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "flex-start", sm: "flex-end" },
-                  justifyContent: "space-between",
+                  display: "grid",
+                  gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
                   gap: 2,
+                  alignItems: "center",
                 }}
               >
                 <Typography sx={{ ...typoLabelStyle, mb: 0 }}>
@@ -604,11 +603,8 @@ const CustomDropdownIcon = (
                 <Box
                   sx={{
                     display: "flex",
-                    alignItems: "center",
-                    flexDirection: "row",
-                    gap: 2,
-                    minWidth: { xs: "100%", sm: "350px" },
-                    width: { xs: "100%", sm: "auto" },
+                    flexDirection: "column",
+                    gap: 1,
                   }}
                 >
                   <Typography
@@ -616,7 +612,6 @@ const CustomDropdownIcon = (
                       fontSize: "14px",
                       fontWeight: 500,
                       color: "#666",
-                      whiteSpace: "nowrap",
                     }}
                   >
                     Người kiểm tra
@@ -655,10 +650,15 @@ const CustomDropdownIcon = (
                                   ? "#EBEBEB"
                                   : "#FFF",
                               },
+                              "& .MuiFormHelperText-root": {
+                                color: "#d32f2f",
+                                fontSize: "12px",
+                                marginTop: "4px",
+                                marginLeft: "14px",
+                              },
                             }}
                           />
                         )}
-                        sx={{ flex: 1 }}
                       />
                     )}
                   />
