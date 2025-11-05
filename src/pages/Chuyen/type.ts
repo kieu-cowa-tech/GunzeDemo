@@ -5,7 +5,6 @@ export type Chuyen = {
   ca: number;
   maChi: string;
   mauChi: string;
-  phanLoai: string;
   nhaCungCap: string;
   cdkl: number;
   lotNguyenLieu: string;
@@ -26,7 +25,6 @@ export const ChuyenData: Chuyen[] = [
     ca: 1,
     maChi: 'MC-001',
     mauChi: 'Đỏ',
-    phanLoai: 'A',
     nhaCungCap: 'Công ty TNHH NLX',
     cdkl: 10,
     lotNguyenLieu: 'LOT001',
@@ -45,7 +43,6 @@ export const ChuyenData: Chuyen[] = [
     ca: 2,
     maChi: 'MC-002',
     mauChi: 'Xanh',
-    phanLoai: 'B',
     nhaCungCap: 'Nhà cung cấp X',
     cdkl: 12,
     lotNguyenLieu: 'LOT-1002',
@@ -64,7 +61,6 @@ export const ChuyenData: Chuyen[] = [
     ca: 3,
     maChi: 'MC-003',
     mauChi: 'Vàng',
-    phanLoai: 'A',
     nhaCungCap: 'Công ty NLY',
     cdkl: 9,
     lotNguyenLieu: 'LOTT003',

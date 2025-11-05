@@ -55,7 +55,6 @@ export default function ChuyenPage() {
       ca: formData.ca || 0,
       maChi: formData.maChi,
       mauChi: formData.mauChi,
-      phanLoai: formData.phanLoai,
       nhaCungCap: formData.nhaCungCap,
       cdkl: formData.cdkl || 0,
       lotNguyenLieu: formData.lotNguyenLieu,
@@ -94,7 +93,6 @@ export default function ChuyenPage() {
     { key: "ca", header: "Ca", sortable: true, minWidth: 50 },
     { key: "maChi", header: "Mã Chỉ", sortable: true, minWidth: 100 },
     { key: "mauChi", header: "Màu Chỉ", minWidth: 140 },
-    { key: "phanLoai", header: "Phân loại", sortable: true, minWidth: 100 },
     { key: "nhaCungCap", header: "Nhà cung cấp", sortable: true, minWidth: 150 },
     { key: "cdkl", header: "CD/KL", sortable: true, minWidth: 100 },
     {
