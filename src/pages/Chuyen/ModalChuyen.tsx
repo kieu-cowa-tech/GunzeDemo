@@ -748,7 +748,8 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
                       error={!!errors.racTruLoi}
                       helperText={errors.racTruLoi?.message}
                       onBlur={()=>{
-                        const valueTrongLuong=(19.5+ (Number(field.value) || 0));
+                        const field1 = watch("trongLuong");
+                        const valueTrongLuong=(Number(field1) + (Number(field.value) || 0));
                         setValue("tong", valueTrongLuong );
                       }}
                       required={true}
