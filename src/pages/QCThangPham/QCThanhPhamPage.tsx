@@ -5,8 +5,6 @@ import { CommonTable } from "../../components/commons/Table/CommonTable";
 import type { Column, RowAction } from "../../components/commons/Table/types";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import { Box, Button } from "@mui/material";
 import { QCThanhPhamModal } from "./ModelQCThanhPham";
 import type { QCThanhPhamFormData } from "./ModelQCThanhPham";
 import { notify } from "../../stores/notifyHost";
@@ -29,12 +27,6 @@ export default function QCThanhPhamPage() {
   }, [items, QCThanhPhamTableStore]);
   
   console.log("items", items);
-
-  const handleOpenAddModal = () => {
-    setModalMode("add");
-    setEditingItem(null);
-    setIsModalOpen(true);
-  };
 
   const handleOpenEditModal = (item: QCThanhPham) => {
     setModalMode("edit");

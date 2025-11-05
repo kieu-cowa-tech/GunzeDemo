@@ -7,7 +7,6 @@ import {
   Button,
   TextField,
   Collapse,
-  Autocomplete,
   Checkbox,
 } from "@mui/material";
 import {
@@ -19,8 +18,8 @@ import {
 } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { CommonTextField } from "../../components/commons/CommonTextFied";
-import type { Staff, LOTInfo } from "../QCNhuom/type";
-import { StaffData, LOTData } from "../QCNhuom/Data";
+import type { LOTInfo } from "../QCNhuom/type";
+import { LOTData } from "../QCNhuom/Data";
 import type { Chuyen } from "./type";
 
 // Định nghĩa type cho form data - khớp với type Chuyen
@@ -148,9 +147,9 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
   mode,
   loading = false,
 }) => {
-  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(
-    StaffData[0] || null
-  );
+  // const [selectedStaff, setSelectedStaff] = useState<Staff | null>(
+  //   StaffData[0] || null
+  // );
   const [foundLot, setFoundLot] = useState<LOTInfo | null>(null);
   const [lotSearchError, setLotSearchError] = useState<string>("");
   const [isLotInfoExpanded, setIsLotInfoExpanded] = useState<boolean>(false);
@@ -168,11 +167,11 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
   };
 
   // Handler để cập nhật cả selectedStaff và form value
-  const handleStaffChange = (newStaff: Staff | null) => {
-    setSelectedStaff(newStaff);
-    // Cập nhật giá trị vào form (lưu tên nhân viên hoặc mã nhân viên)
-    setValue("congNhan", newStaff ? newStaff.tenNV : "");
-  };
+  // const handleStaffChange = (newStaff: Staff | null) => {
+  //   setSelectedStaff(newStaff);
+  //   // Cập nhật giá trị vào form (lưu tên nhân viên hoặc mã nhân viên)
+  //   setValue("congNhan", newStaff ? newStaff.tenNV : "");
+  // };
   const {
     control,
     handleSubmit,
@@ -232,6 +231,9 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
       setValue("mauChi", found.mauChi.toString());
       setValue("nguyenVatLieu", found.nguyenLieu);
       setValue("nhaCungCap", found.nhaCungCap.toString());
+      setValue("tong", 22.5);
+      setValue("trongLuong", 19.5);
+      setValue("congNhan", "Trần Công Thắng"); // Mặc định công nhân sau khi tra cứu thành công
 
       console.log("Đã tìm thấy và điền thông tin Lot:", found);
     } else {
@@ -266,10 +268,10 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
       });
 
       // Tìm staff tương ứng để hiển thị trong AsyncAutocomplete
-      const staff = StaffData.find(
-        (s) => s.tenNV === editData.congNhan || s.maNV === editData.congNhan
-      );
-      setSelectedStaff(staff || null);
+      // const staff = StaffData.find(
+      //   (s) => s.tenNV === editData.congNhan || s.maNV === editData.congNhan
+      // );
+      // setSelectedStaff(staff || null);
 
       // Enable form khi ở chế độ edit
       setIsFormEnabled(true);
@@ -294,7 +296,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
         tong: null,
         trongLuong: null,
       });
-      setSelectedStaff(null);
+      //setSelectedStaff(null);
 
       // Disable form khi thêm mới
       setIsFormEnabled(false);
@@ -559,7 +561,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
 
           {/* Kết quả QC và Người kiểm tra */}
           <form onSubmit={handleSubmit(handleFormSubmit)}>
-            <Box
+            {/* <Box
               sx={{
                 mb: 2,
                 //borderBottom: "1px solid #E0E0E0",
@@ -577,7 +579,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
               >
                 {/* <Typography sx={{ ...typoLabelStyle, mb: 0 }}>
                   Kết quả QC
-                </Typography> */}
+                </Typography> }
                 <Box
                   sx={{
                     display: "flex",
@@ -632,7 +634,7 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
                   />
                 </Box>
               </Box>
-            </Box>
+            </Box> */}
 
             {/* Thông tin */}
             <Box
@@ -710,7 +712,6 @@ export const ChuyenModal: React.FC<ChuyenModalProps> = ({
                       type="number"
                       placeholder="Nhập tổng khối lượng"
                       error={!!errors.tong}
-                      value={22.5}
                       helperText={errors.tong?.message}
                       required={true}
                       disabled={!isFormEnabled || true}

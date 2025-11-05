@@ -7,7 +7,6 @@ import {
   Button,
   TextField,
   Collapse,
-  Autocomplete,
 } from "@mui/material";
 import {
   Search,
@@ -18,8 +17,9 @@ import {
 } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import { CommonTextField } from "../../components/commons/CommonTextFied";
-import type {  Staff, LOTInfo } from "../QCNhuom/type";
-import { StaffData, LOTData } from "../QCNhuom/Data";
+import { CommonAutoComplete } from "../../components/commons/AutoComplete/AutoComplete";
+import type { LOTInfo } from "../QCNhuom/type";
+import { LOTData } from "../QCNhuom/Data";
 import type { QCThanhPham } from "./type";
 
 // Định nghĩa type cho form data
@@ -153,9 +153,9 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
   mode,
   loading = false,
 }) => {
-  const [selectedStaff, setSelectedStaff] = useState<Staff | null>(
-    StaffData[0] || null
-  );
+  // const [selectedStaff, setSelectedStaff] = useState<Staff | null>(
+  //   StaffData[0] || null
+  // );
   const [foundLot, setFoundLot] = useState<LOTInfo | null>(null);
   const [lotSearchError, setLotSearchError] = useState<string>("");
   const [isLotInfoExpanded, setIsLotInfoExpanded] = useState<boolean>(false);
@@ -173,11 +173,11 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
   };
 
   // Handler để cập nhật cả selectedStaff và form value
-  const handleStaffChange = (newStaff: Staff | null) => {
-    setSelectedStaff(newStaff);
-    // Cập nhật giá trị vào form (lưu tên nhân viên hoặc mã nhân viên)
-    setValue("congNhan", newStaff ? newStaff.tenNV : "");
-  };
+  // const handleStaffChange = (newStaff: Staff | null) => {
+  //   setSelectedStaff(newStaff);
+  //   // Cập nhật giá trị vào form (lưu tên nhân viên hoặc mã nhân viên)
+  //   setValue("congNhan", newStaff ? newStaff.tenNV : "");
+  // };
   const {
     control,
     handleSubmit,
@@ -280,8 +280,8 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
       });
       
       // Tìm staff tương ứng để hiển thị trong AsyncAutocomplete
-      const staff = StaffData.find(s => s.tenNV === editData.congNhan || s.maNV === editData.congNhan);
-      setSelectedStaff(staff || null);
+      // const staff = StaffData.find(s => s.tenNV === editData.congNhan || s.maNV === editData.congNhan);
+      // setSelectedStaff(staff || null);
       
       // Enable form khi ở chế độ edit
       setIsFormEnabled(true);
@@ -310,7 +310,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
         maChiKH: "",
         rac: "",
       });
-      setSelectedStaff(null);
+      //setSelectedStaff(null);
       
       // Disable form khi thêm mới
       setIsFormEnabled(false);
@@ -804,37 +804,39 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
                 }}
               >
                 <Controller
+                  name="loiCuon1"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: "Số lượng NG 1 phải lớn hơn hoặc bằng 0"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Số lượng NG 1"
+                      type="number"
+                      placeholder="Nhập số lượng NG 1"
+                      error={!!errors.loiCuon1}
+                      helperText={errors.loiCuon1?.message}
+                      disabled={!isFormEnabled}
+                    />
+                  )}
+                />
+                <Controller
                   name="maLoi1"
                   control={control}
                   render={({ field }) => (
-                    <CommonTextField
+                    <CommonAutoComplete
                       {...field}
                       label="Mã lỗi 1"
                       placeholder="Nhập mã lỗi 1"
                       error={!!errors.maLoi1}
                       helperText={errors.maLoi1?.message}
                       disabled={!isFormEnabled}
-                    />
-                  )}
-                />
-                <Controller
-                  name="loiCuon1"
-                  control={control}
-                  rules={{
-                    min: {
-                      value: 0,
-                      message: "Lỗi cuộn 1 phải lớn hơn hoặc bằng 0"
-                    }
-                  }}
-                  render={({ field }) => (
-                    <CommonTextField
-                      {...field}
-                      label="Lỗi cuộn 1"
-                      type="number"
-                      placeholder="Nhập lỗi cuộn 1"
-                      error={!!errors.loiCuon1}
-                      helperText={errors.loiCuon1?.message}
-                      disabled={!isFormEnabled}
+                      options={["Lỗi Nhuộm","Máy Hỏng","Lỗi Chỉ","Lỗi Khác"]}
+                      onChange={(_, value) => field.onChange(value)}
                     />
                   )}
                 />
@@ -848,38 +850,40 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
                   mt: 3,
                 }}
               >
+              <Controller
+                  name="loiCuon2"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: "Số lượng NG 2 phải lớn hơn hoặc bằng 0"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Số lượng NG 2"
+                      type="number"
+                      placeholder="Nhập số lượng NG 2"
+                      error={!!errors.loiCuon2}
+                      helperText={errors.loiCuon2?.message}
+                      disabled={!isFormEnabled}
+                    />
+                  )}
+                />
                 <Controller
                   name="maLoi2"
                   control={control}
                   render={({ field }) => (
-                    <CommonTextField
+                    <CommonAutoComplete
                       {...field}
                       label="Mã lỗi 2"
                       placeholder="Nhập mã lỗi 2"
                       error={!!errors.maLoi2}
                       helperText={errors.maLoi2?.message}
                       disabled={!isFormEnabled}
-                    />
-                  )}
-                />
-                <Controller
-                  name="loiCuon2"
-                  control={control}
-                  rules={{
-                    min: {
-                      value: 0,
-                      message: "Lỗi cuộn 2 phải lớn hơn hoặc bằng 0"
-                    }
-                  }}
-                  render={({ field }) => (
-                    <CommonTextField
-                      {...field}
-                      label="Lỗi cuộn 2"
-                      type="number"
-                      placeholder="Nhập lỗi cuộn 2"
-                      error={!!errors.loiCuon2}
-                      helperText={errors.loiCuon2?.message}
-                      disabled={!isFormEnabled}
+                      options={["Lỗi Nhuộm","Máy Hỏng","Lỗi Chỉ","Lỗi Khác"]}
+                      onChange={(_, value) => field.onChange(value)}
                     />
                   )}
                 />
@@ -894,37 +898,39 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
                 }}
               >
                 <Controller
+                  name="loiCuon3"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: "Số lượng NG 1 phải lớn hơn hoặc bằng 0"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Số lượng NG 3"
+                      type="number"
+                      placeholder="Nhập số lượng NG 3"
+                      error={!!errors.loiCuon3}
+                      helperText={errors.loiCuon3?.message}
+                      disabled={!isFormEnabled}
+                    />
+                  )}
+                />
+                <Controller
                   name="maLoi3"
                   control={control}
                   render={({ field }) => (
-                    <CommonTextField
+                    <CommonAutoComplete
                       {...field}
                       label="Mã lỗi 3"
                       placeholder="Nhập mã lỗi 3"
                       error={!!errors.maLoi3}
                       helperText={errors.maLoi3?.message}
                       disabled={!isFormEnabled}
-                    />
-                  )}
-                />
-                <Controller
-                  name="loiCuon3"
-                  control={control}
-                  rules={{
-                    min: {
-                      value: 0,
-                      message: "Lỗi cuộn 3 phải lớn hơn hoặc bằng 0"
-                    }
-                  }}
-                  render={({ field }) => (
-                    <CommonTextField
-                      {...field}
-                      label="Lỗi cuộn 3"
-                      type="number"
-                      placeholder="Nhập lỗi cuộn 3"
-                      error={!!errors.loiCuon3}
-                      helperText={errors.loiCuon3?.message}
-                      disabled={!isFormEnabled}
+                      options={["Lỗi Nhuộm","Máy Hỏng","Lỗi Chỉ","Lỗi Khác"]}
+                      onChange={(_, value) => field.onChange(value)}
                     />
                   )}
                 />
@@ -939,37 +945,39 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
                 }}
               >
                 <Controller
+                  name="loiCuon4"
+                  control={control}
+                  rules={{
+                    min: {
+                      value: 0,
+                      message: "Số lượng NG 4 phải lớn hơn hoặc bằng 0"
+                    }
+                  }}
+                  render={({ field }) => (
+                    <CommonTextField
+                      {...field}
+                      label="Số lượng NG 4"
+                      type="number"
+                      placeholder="Nhập số lượng NG 4"
+                      error={!!errors.loiCuon4}
+                      helperText={errors.loiCuon4?.message}
+                      disabled={!isFormEnabled}
+                    />
+                  )}
+                />
+                <Controller
                   name="maLoi4"
                   control={control}
                   render={({ field }) => (
-                    <CommonTextField
+                    <CommonAutoComplete
                       {...field}
                       label="Mã lỗi 4"
                       placeholder="Nhập mã lỗi 4"
                       error={!!errors.maLoi4}
                       helperText={errors.maLoi4?.message}
                       disabled={!isFormEnabled}
-                    />
-                  )}
-                />
-                <Controller
-                  name="loiCuon4"
-                  control={control}
-                  rules={{
-                    min: {
-                      value: 0,
-                      message: "Lỗi cuộn 4 phải lớn hơn hoặc bằng 0"
-                    }
-                  }}
-                  render={({ field }) => (
-                    <CommonTextField
-                      {...field}
-                      label="Lỗi cuộn 4"
-                      type="number"
-                      placeholder="Nhập lỗi cuộn 4"
-                      error={!!errors.loiCuon4}
-                      helperText={errors.loiCuon4?.message}
-                      disabled={!isFormEnabled}
+                      options={["Lỗi Nhuộm","Máy Hỏng","Lỗi Chỉ","Lỗi Khác"]}
+                      onChange={(_, value) => field.onChange(value)}
                     />
                   )}
                 />
