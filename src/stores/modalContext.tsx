@@ -4,10 +4,12 @@ interface ModalContextType {
   isQCNhuomModalOpen: boolean;
   openQCNhuomModal: () => void;
   closeQCNhuomModal: () => void;
-  // Có thể thêm các modal khác sau
-  // isOtherModalOpen: boolean;
-  // openOtherModal: () => void;
-  // closeOtherModal: () => void;
+  isChuyenModalOpen: boolean;
+  openChuyenModal: () => void;
+  closeChuyenModal: () => void;
+  isQCThanhPhamModalOpen: boolean;
+  openQCThanhPhamModal: () => void;
+  closeQCThanhPhamModal: () => void;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -18,15 +20,29 @@ interface ModalProviderProps {
 
 export const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
   const [isQCNhuomModalOpen, setIsQCNhuomModalOpen] = useState(false);
+  const [isChuyenModalOpen, setIsChuyenModalOpen] = useState(false);
+  const [isQCThanhPhamModalOpen, setIsQCThanhPhamModalOpen] = useState(false);
 
   const openQCNhuomModal = () => setIsQCNhuomModalOpen(true);
   const closeQCNhuomModal = () => setIsQCNhuomModalOpen(false);
+
+  const openChuyenModal = () => setIsChuyenModalOpen(true);
+  const closeChuyenModal = () => setIsChuyenModalOpen(false);
+
+  const openQCThanhPhamModal = () => setIsQCThanhPhamModalOpen(true);
+  const closeQCThanhPhamModal = () => setIsQCThanhPhamModalOpen(false);
 
   return (
     <ModalContext.Provider value={{ 
       isQCNhuomModalOpen, 
       openQCNhuomModal, 
-      closeQCNhuomModal 
+      closeQCNhuomModal,
+      isChuyenModalOpen,
+      openChuyenModal,
+      closeChuyenModal,
+      isQCThanhPhamModalOpen,
+      openQCThanhPhamModal,
+      closeQCThanhPhamModal
     }}>
       {children}
     </ModalContext.Provider>

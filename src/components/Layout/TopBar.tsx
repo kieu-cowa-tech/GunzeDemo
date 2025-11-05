@@ -9,6 +9,7 @@ import {
   Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useLocation } from "react-router-dom";
 //import { useStoreMenu } from "../../stores/menu";
 import type { SvgIconProps } from "@mui/material/SvgIcon";
 import { useModal } from "../../stores/modalContext";
@@ -25,7 +26,25 @@ export default function TopBar() {
   //const { sidebarOpen, toggleSidebar } = useStoreMenu();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const { openQCNhuomModal } = useModal();
+  const location = useLocation();
+  const { openQCNhuomModal, openChuyenModal, openQCThanhPhamModal } = useModal();
+
+  // Hàm xử lý click nút Nhập dựa trên route hiện tại
+  const handleNhapClick = () => {
+    switch (location.pathname) {
+      case "/":
+        openQCNhuomModal();
+        break;
+      case "/chuyen":
+        openChuyenModal();
+        break;
+      case "/qc-thanh-pham":
+        openQCThanhPhamModal();
+        break;
+      default:
+        openQCNhuomModal();
+    }
+  };
 
   return (
     <AppBar
@@ -87,7 +106,7 @@ export default function TopBar() {
           <Button
             variant="contained"
             size={isMobile ? "small" : "medium"}
-            onClick={openQCNhuomModal}
+            onClick={handleNhapClick}
             sx={{
               backgroundColor: "white",
               color: "#0a66c2",

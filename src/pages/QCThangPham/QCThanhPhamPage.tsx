@@ -86,19 +86,18 @@ export default function QCThanhPhamPage() {
     { key: "ngayNhap", header: "Ngày nhập", sortable: true, minWidth: 100 },
     { key: "lotNo", header: "Lot no", sortable: true, minWidth: 100 },
     { key: "maChi", header: "Mã chỉ", sortable: true, minWidth: 100 },
-    { key: "mauChi", header: "Màu chỉ", sortable: true, minWidth: 100 },
+    { key: "mauChi", header: "Màu chỉ", sortable: true, minWidth: 110 },
     { key: "lotThanhPham", header: "Lot TP", sortable: true, minWidth: 100 },
-    { key: "soCuon", header: "Số cuộn", sortable: true, minWidth: 100 },
-    { key: "congNhan", header: "Công nhân", sortable: true, minWidth: 100 },
-
-    { key: "maLoi1", header: "Công nhân", sortable: true, minWidth: 100 },
-    { key: "loiCuon1", header: "Mã lỗi 1", sortable: true, minWidth: 100 },
-    { key: "maLoi2", header: "Lỗi cuộn 1", sortable: true, minWidth: 100 },
-    { key: "loiCuon2", header: "Mã lỗi 2", sortable: true, minWidth: 100 },
-    { key: "maLoi3", header: "Lỗi cuộn 2", sortable: true, minWidth: 100 },
-    { key: "loiCuon3", header: "Mã lỗi 3", sortable: true, minWidth: 100 },
-    { key: "maLoi4", header: "Lỗi cuộn 3", sortable: true, minWidth: 100 },
-    { key: "loiCuon4", header: "Mã lỗi 4", sortable: true, minWidth: 100 },
+    { key: "soCuon", header: "Số cuộn", sortable: true, minWidth: 110 },
+    { key: "congNhan", header: "Công nhân", sortable: true, minWidth: 120 },
+    { key: "maLoi1", header: "Mã lỗi 1", sortable: true, minWidth: 105 },
+    { key: "loiCuon1", header: "Lỗi cuộn 1", sortable: true, minWidth: 120 },
+    { key: "maLoi2", header: "Mã lỗi 2", sortable: true, minWidth: 105 },
+    { key: "loiCuon2", header: "Lỗi cuộn 2", sortable: true, minWidth: 120 },
+    { key: "maLoi3", header: "Mã lỗi 3", sortable: true, minWidth: 105 },
+    { key: "loiCuon3", header: "Lỗi cuộn 3", sortable: true, minWidth: 120},
+    { key: "maLoi4", header: "Mã lỗi 4", sortable: true, minWidth: 105 },
+    { key: "loiCuon4", header: "Lỗi cuộn 4", sortable: true, minWidth: 120 },
     { key: "quyCach", header: "Quy cách", sortable: true, minWidth: 100 },
     { key: "khoiLuong", header: "Khối lượng", sortable: true, minWidth: 100 },
     { key: "cd_kl", header: "CD/KL", sortable: true, minWidth: 100 },
@@ -148,7 +147,7 @@ export default function QCThanhPhamPage() {
 
   return (
     <>
-      <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+      {/* <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
         <Button
           variant="contained"
           startIcon={<AddIcon />}
@@ -162,7 +161,7 @@ export default function QCThanhPhamPage() {
         >
           Thêm mới
         </Button>
-      </Box>
+      </Box> */}
 
       <CommonTable<QCThanhPham>
         columns={columns}

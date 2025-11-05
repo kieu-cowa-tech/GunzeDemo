@@ -137,7 +137,6 @@ const buttonContainerStyle = {
   justifyContent: "flex-end",
   gap: 2,
   padding: "20px 36px",
-  gap: "12px",
   borderTop: "1px solid #E0E0E0",
   backgroundColor: "#ffffff",
   position: "sticky",
@@ -989,7 +988,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
                   render={({ field }) => (
                     <CommonTextField
                       {...field}
-                      label="Rác"
+                      label="Rác (kg)"
                       placeholder="Nhập rác"
                       error={!!errors.rac}
                       helperText={errors.rac?.message}

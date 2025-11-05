@@ -188,7 +188,7 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
           {...textFieldProps}
           fullWidth
           variant="outlined"
-          placeholder={`Nhập ${label.toLowerCase()}`}
+         // placeholder={`Nhập ${label.toLowerCase()}`}
           InputProps={finalInputProps}
           multiline={multiline}
           rows={rows}
@@ -206,6 +206,8 @@ export const CommonTextField: React.FC<CommonTextFieldProps> = ({
             marginTop: "4px",
             marginLeft: "14px",
             lineHeight: "14px",
+            letterSpacing: "0%",
+           // padding: "-2px 0 0 0",
           }}
         >
           {helperText}
