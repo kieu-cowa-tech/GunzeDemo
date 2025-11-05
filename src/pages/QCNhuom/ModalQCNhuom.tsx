@@ -314,7 +314,16 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
       setSearchLotValue(""); // Reset search input
     }
   }, [mode, editData, reset, today]);
-
+const CustomDropdownIcon = (
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
+       xmlns="http://www.w3.org/2000/svg">
+    <path d="M7 10.5L14 17.5L21 10.5"
+          stroke="#4E4E4E"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"/>
+  </svg>
+);
   const handleFormSubmit = (data: QCNhuomFormData) => {
     onSubmit(data);
     reset();
@@ -602,6 +611,7 @@ export const QCNhuomModal: React.FC<QCNhuomModalProps> = ({
                     render={({ field }) => (
                       <Autocomplete<Staff>
                         {...field}
+                        popupIcon={CustomDropdownIcon} 
                         options={StaffData}
                         value={selectedStaff}
                         onChange={(_, newValue) => handleStaffChange(newValue)}

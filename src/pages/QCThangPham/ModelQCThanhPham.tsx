@@ -1066,7 +1066,7 @@ export const QCThanhPhamModal: React.FC<QCThanhPhamModalProps> = ({
             disabled={loading || !isFormEnabled}
             sx={{
               fontSize: "18px",
-              
+              height: "48px",
               fontWeight: 500,
               borderRadius: "50px",
               minWidth: "120px",
